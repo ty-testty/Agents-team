@@ -12,14 +12,14 @@ This diagram is intentionally square and layered. Solid arrows are the normal pa
 flowchart LR
     subgraph Entry["Entry"]
         U["User"]
-        L["Lead<br/>Entry + routing"]
+        L["&quot;Lead&quot;<br/>Entry + routing"]
     end
 
     subgraph Planning["Planning Gates"]
-        PD["Product Designer<br/>Product Gate"]
-        PE["Project Explorer<br/>Context Gate"]
-        RA["Research Architect<br/>Architecture Gate"]
-        DEVF["DevOps Engineer<br/>Feasibility Gate"]
+        PD["&quot;Product Designer&quot;<br/>Product Gate"]
+        PE["&quot;Project Explorer&quot;<br/>Context Gate"]
+        RA["&quot;Architect&quot;<br/>Architecture Gate"]
+        DEVF["&quot;DevOps Engineer&quot;<br/>Feasibility Gate"]
     end
 
     subgraph Approval["Approval"]
@@ -27,16 +27,16 @@ flowchart LR
     end
 
     subgraph Implementation["Implementation"]
-        FE["Frontend Engineer"]
-        BE["Backend Engineer"]
-        DEVI["DevOps Engineer"]
+        FE["&quot;Frontend Engineer&quot;"]
+        BE["&quot;Backend Engineer&quot;"]
+        DEVI["&quot;DevOps Engineer&quot;"]
     end
 
     subgraph Review["Review + Release"]
-        QA["QA Engineer<br/>QA Gate"]
-        CR["Code Reviewer<br/>Code Review Gate"]
-        SR["Security Reviewer<br/>Security Gate"]
-        FINAL["Lead<br/>Final Summary"]
+        QA["&quot;QA Engineer&quot;<br/>QA Gate"]
+        CR["&quot;Code Reviewer&quot;<br/>Code Review Gate"]
+        SR["&quot;Security Reviewer&quot;<br/>Security Gate"]
+        FINAL["&quot;Lead&quot;<br/>Final Summary"]
     end
 
     U --> L
@@ -80,16 +80,16 @@ This diagram shows only the main gate order. Rejections and failures are handled
 
 ```mermaid
 flowchart LR
-    A["Intake<br/>Lead"] --> B["Product Gate<br/>Product Designer"]
-    B --> C["Context Gate<br/>Project Explorer"]
-    C --> D["Architecture Gate<br/>Research Architect"]
-    D --> E["Release Feasibility<br/>DevOps Engineer"]
-    E --> F["User Approval<br/>Lead"]
-    F --> G["Implementation<br/>Frontend / Backend / DevOps"]
-    G --> H["QA Gate<br/>QA Engineer"]
-    H --> I["Code Review<br/>Code Reviewer"]
-    I --> J["Security Gate<br/>Security Reviewer"]
-    J --> K["Final<br/>Lead"]
+    A["Intake<br/>&quot;Lead&quot;"] --> B["Product Gate<br/>&quot;Product Designer&quot;"]
+    B --> C["Context Gate<br/>&quot;Project Explorer&quot;"]
+    C --> D["Architecture Gate<br/>&quot;Architect&quot;"]
+    D --> E["Release Feasibility<br/>&quot;DevOps Engineer&quot;"]
+    E --> F["User Approval<br/>&quot;Lead&quot;"]
+    F --> G["Implementation<br/>&quot;Frontend Engineer&quot; / &quot;Backend Engineer&quot; / &quot;DevOps Engineer&quot;"]
+    G --> H["QA Gate<br/>&quot;QA Engineer&quot;"]
+    H --> I["Code Review<br/>&quot;Code Reviewer&quot;"]
+    I --> J["Security Gate<br/>&quot;Security Reviewer&quot;"]
+    J --> K["Final<br/>&quot;Lead&quot;"]
 ```
 
 ## Rejection And Recovery Loops
@@ -98,7 +98,7 @@ User rejection is not always the end. Lead classifies the reason and sends the w
 
 ```mermaid
 flowchart TB
-    REJ["User rejects approval"] --> LEAD["Lead classifies reason"]
+    REJ["User rejects approval"] --> LEAD["&quot;Lead&quot; classifies reason"]
 
     LEAD --> CANCEL["Cancel task<br/>End"]
     LEAD --> SCOPE["Scope / product change<br/>Product Gate"]
@@ -108,11 +108,11 @@ flowchart TB
 
     QAFAIL["QA fails"] --> IMPL["Implementation Gate"]
 
-    CRBLOCK["Code Review blocks"] --> CRWHY["Lead classifies issue"]
+    CRBLOCK["Code Review blocks"] --> CRWHY["&quot;Lead&quot; classifies issue"]
     CRWHY --> IMPLISSUE["Implementation issue<br/>Implementation Gate"]
     CRWHY --> ARCHISSUE["Architecture issue<br/>Architecture Gate"]
 
-    SECBLOCK["Security blocks"] --> SECWHY["Lead classifies issue"]
+    SECBLOCK["Security blocks"] --> SECWHY["&quot;Lead&quot; classifies issue"]
     SECWHY --> FIX["Fix needed<br/>Implementation Gate"]
     SECWHY --> DESIGN["Design issue<br/>Architecture Gate"]
     SECWHY --> ACCEPT["Risk acceptance needed<br/>User Approval Gate"]
