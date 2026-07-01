@@ -6,74 +6,116 @@ The user only talks to Lead. Lead routes work through gates. Specialist agents p
 
 ## System Architecture
 
+This diagram is intentionally square and layered. Solid arrows are the normal path. Dotted arrows are recovery paths.
+
 ```mermaid
-flowchart TB
-    U["User"] --> L["Lead<br/>Entry point / routing / state machine"]
+flowchart LR
+    subgraph Entry["Entry"]
+        U["User"]
+        L["Lead<br/>Entry + routing"]
+    end
 
-    L --> PD["Product Designer<br/>Goal / scope / UX"]
-    L --> PE["Project Explorer<br/>Read-only codebase facts"]
-    L --> RA["Research Architect<br/>Technical plan / research / architecture"]
-    L --> DO1["DevOps Engineer<br/>Release feasibility review"]
+    subgraph Planning["Planning Gates"]
+        PD["Product Designer<br/>Product Gate"]
+        PE["Project Explorer<br/>Context Gate"]
+        RA["Research Architect<br/>Architecture Gate"]
+        DEVF["DevOps Engineer<br/>Feasibility Gate"]
+    end
 
-    PD --> A1["Product Brief"]
-    PE --> A2["Project Context Report"]
-    RA --> A3["Architecture Plan"]
-    DO1 --> A4["DevOps Feasibility Report"]
+    subgraph Approval["Approval"]
+        APPR["User Approval Gate<br/>explicit permission required"]
+    end
 
-    A1 --> L
-    A2 --> L
-    A3 --> L
-    A4 --> L
+    subgraph Implementation["Implementation"]
+        FE["Frontend Engineer"]
+        BE["Backend Engineer"]
+        DEVI["DevOps Engineer"]
+    end
 
-    L --> G["User Approval Gate<br/>Requires explicit permission"]
+    subgraph Review["Review + Release"]
+        QA["QA Engineer<br/>QA Gate"]
+        CR["Code Reviewer<br/>Code Review Gate"]
+        SR["Security Reviewer<br/>Security Gate"]
+        FINAL["Lead<br/>Final Summary"]
+    end
 
-    G --> FE["Frontend Engineer"]
-    G --> BE["Backend Engineer"]
-    G --> DO2["DevOps Engineer"]
+    U --> L
+    L --> PD
+    L --> PE
+    L --> RA
+    L --> DEVF
 
-    FE --> I1["Frontend Implementation Artifact"]
-    BE --> I2["Backend Implementation Artifact"]
-    DO2 --> I3["DevOps Implementation Artifact"]
+    PD --> APPR
+    PE --> APPR
+    RA --> APPR
+    DEVF --> APPR
 
-    I1 --> QA["QA Engineer<br/>Function / UX / tests"]
-    I2 --> QA
-    I3 --> QA
+    APPR --> FE
+    APPR --> BE
+    APPR --> DEVI
 
-    QA --> CR["Code Reviewer<br/>Code quality / maintainability"]
-    CR --> SR["Security Reviewer<br/>Security / release gate"]
+    FE --> QA
+    BE --> QA
+    DEVI --> QA
 
-    SR --> L
-    L --> F["Final Summary<br/>Release recommendation"]
-    F --> U
+    QA --> CR
+    CR --> SR
+    SR --> FINAL
+    FINAL --> U
+
+    APPR -. scope change .-> PD
+    APPR -. technical concern .-> RA
+    APPR -. release concern .-> DEVF
+    QA -. fails .-> FE
+    QA -. fails .-> BE
+    QA -. fails .-> DEVI
+    CR -. architecture issue .-> RA
+    SR -. risk acceptance .-> APPR
+    SR -. design issue .-> RA
 ```
 
 ## Execution Flow
 
+This diagram shows only the main gate order. Rejections and failures are handled in the loop diagram below.
+
 ```mermaid
-stateDiagram-v2
-    [*] --> Intake
-    Intake --> ProductGate
-    ProductGate --> ContextGate
-    ContextGate --> ArchitectureGate
-    ArchitectureGate --> DevOpsFeasibilityGate
-    DevOpsFeasibilityGate --> UserApprovalGate
+flowchart LR
+    A["Intake<br/>Lead"] --> B["Product Gate<br/>Product Designer"]
+    B --> C["Context Gate<br/>Project Explorer"]
+    C --> D["Architecture Gate<br/>Research Architect"]
+    D --> E["Release Feasibility<br/>DevOps Engineer"]
+    E --> F["User Approval<br/>Lead"]
+    F --> G["Implementation<br/>Frontend / Backend / DevOps"]
+    G --> H["QA Gate<br/>QA Engineer"]
+    H --> I["Code Review<br/>Code Reviewer"]
+    I --> J["Security Gate<br/>Security Reviewer"]
+    J --> K["Final<br/>Lead"]
+```
 
-    UserApprovalGate --> ImplementationGate: user approves
-    UserApprovalGate --> [*]: user rejects / changes scope
+## Rejection And Recovery Loops
 
-    ImplementationGate --> QAGate
-    QAGate --> CodeReviewGate: QA pass
-    QAGate --> ImplementationGate: QA fails
+User rejection is not always the end. Lead classifies the reason and sends the work back to the nearest responsible gate.
 
-    CodeReviewGate --> SecurityGate: code review pass
-    CodeReviewGate --> ImplementationGate: blocking issues
+```mermaid
+flowchart TB
+    REJ["User rejects approval"] --> LEAD["Lead classifies reason"]
 
-    SecurityGate --> FinalGate: RELEASE_OK
-    SecurityGate --> UserApprovalGate: RISK_ACCEPTANCE needed
-    SecurityGate --> ArchitectureGate: RELEASE_BLOCKED / design issue
-    SecurityGate --> ImplementationGate: RELEASE_BLOCKED / fix needed
+    LEAD --> CANCEL["Cancel task<br/>End"]
+    LEAD --> SCOPE["Scope / product change<br/>Product Gate"]
+    LEAD --> TECH["Technical concern<br/>Architecture Gate"]
+    LEAD --> REL["Release / cost concern<br/>DevOps Feasibility"]
+    LEAD --> RISK["Risk concern<br/>Security or Architecture"]
 
-    FinalGate --> [*]
+    QAFAIL["QA fails"] --> IMPL["Implementation Gate"]
+
+    CRBLOCK["Code Review blocks"] --> CRWHY["Lead classifies issue"]
+    CRWHY --> IMPLISSUE["Implementation issue<br/>Implementation Gate"]
+    CRWHY --> ARCHISSUE["Architecture issue<br/>Architecture Gate"]
+
+    SECBLOCK["Security blocks"] --> SECWHY["Lead classifies issue"]
+    SECWHY --> FIX["Fix needed<br/>Implementation Gate"]
+    SECWHY --> DESIGN["Design issue<br/>Architecture Gate"]
+    SECWHY --> ACCEPT["Risk acceptance needed<br/>User Approval Gate"]
 ```
 
 ## Core Principles
