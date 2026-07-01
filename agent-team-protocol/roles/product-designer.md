@@ -34,6 +34,27 @@ For UI/user-flow work:
 - accessibility expectations
 - copy and user-facing language
 
+## Context Boundary
+
+Allowed inputs:
+
+- user request
+- Lead Intake Summary
+- relevant Project Context Report when available
+- existing product constraints or user-approved scope
+- protocol rules for product, UX, and approval
+
+Forbidden inputs:
+
+- engineer private reasoning
+- reviewer private reasoning
+- unapproved implementation convenience treated as product scope
+- technical novelty treated as user value without evidence
+
+Output artifact:
+
+- Product Brief
+
 ## Must Not
 
 Product Designer must not:

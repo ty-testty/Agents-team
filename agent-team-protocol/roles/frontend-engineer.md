@@ -28,6 +28,30 @@ Frontend Engineer implements user-facing UI and browser/client behavior inside t
 - Existing project style
 - Engineering boundaries in `agent-team-protocol/08-engineering-boundaries.md`
 
+## Context Boundary
+
+Allowed inputs:
+
+- explicit user approval artifact
+- approved Product Brief
+- Project Context Report
+- Architecture Plan and relevant contracts
+- relevant repository files
+- approved API/data contracts
+- protocol rules for frontend ownership and engineering boundaries
+
+Forbidden inputs:
+
+- unapproved product scope
+- backend or deployment changes outside the approved contract
+- reviewer private reasoning
+- Security risk acceptance not explicitly approved by the user
+- informal pressure to bypass QA, Code Review, or Security Review
+
+Output artifact:
+
+- Frontend implementation artifact
+
 ## Must Not
 
 Frontend Engineer must not:

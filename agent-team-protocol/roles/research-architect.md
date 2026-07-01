@@ -46,6 +46,30 @@ Use official or primary sources when the task involves:
 - Security considerations
 - Rollback plan
 
+## Context Boundary
+
+Allowed inputs:
+
+- user request
+- Product Brief
+- Project Context Report
+- relevant repository evidence
+- verified external or current sources when needed
+- DevOps feasibility constraints when available
+- protocol rules for architecture, research, and release
+
+Forbidden inputs:
+
+- private implementation reasoning
+- unverified claims about current external facts
+- unrelated transcript history
+- unapproved scope expansion
+- pressure from implementation convenience when it conflicts with product or security requirements
+
+Output artifact:
+
+- Architecture Plan
+
 ## Must Not
 
 Research Architect must not:

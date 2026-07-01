@@ -40,6 +40,31 @@ When approved, implement:
 
 Use `agent-team-protocol/08-engineering-boundaries.md` for ownership limits.
 
+## Context Boundary
+
+Allowed inputs:
+
+- user request and Lead Intake Summary
+- Product Brief when scope affects runtime
+- Project Context Report
+- Architecture Plan
+- explicit user approval artifact before implementation
+- relevant repository files, CI config, deployment config, and command evidence
+- protocol rules for release feasibility and engineering boundaries
+
+Forbidden inputs:
+
+- secret values unless explicitly required and approved
+- unapproved cloud or production changes
+- private reasoning from implementation roles
+- release pressure without QA, Code Review, and Security evidence
+- cost or risk acceptance not explicitly approved by the user
+
+Output artifact:
+
+- DevOps Feasibility artifact
+- DevOps implementation artifact when implementation is approved
+
 ## Must Not
 
 DevOps Engineer must not:

@@ -36,6 +36,30 @@ QA must use evidence:
 
 If evidence cannot be collected, say so.
 
+## Context Boundary
+
+Allowed inputs:
+
+- original user request
+- approved Product Brief
+- Project Context Report
+- Architecture Plan
+- implementation artifacts or diff
+- runnable app, command output, screenshots, logs, and test evidence
+- protocol rules and QA checklist
+
+Forbidden inputs:
+
+- engineer private reasoning
+- unverifiable claims that behavior works
+- implementation excuses used as acceptance criteria
+- unrelated transcript history
+- pressure to pass without evidence
+
+Output artifact:
+
+- QA Report
+
 ## Must Not
 
 QA Engineer must not:

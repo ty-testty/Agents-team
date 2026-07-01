@@ -44,6 +44,33 @@ If Security returns `RELEASE_BLOCKED`, Lead must not recommend release.
 
 If Security returns `RELEASE_OK_WITH_RISK_ACCEPTANCE`, the user must explicitly accept the risk before release.
 
+## Context Boundary
+
+Allowed inputs:
+
+- original user request
+- approved Product Brief
+- Project Context Report
+- Architecture Plan
+- DevOps Feasibility artifact
+- implementation artifacts or diff
+- QA Report
+- Code Review Report
+- relevant config, dependency, auth, permission, and deployment evidence
+- protocol rules and Security checklist
+
+Forbidden inputs:
+
+- engineer private reasoning
+- Lead pressure to release
+- unstated risk acceptance
+- unverifiable claims that a risk is harmless
+- unrelated transcript history
+
+Output artifact:
+
+- Security Review
+
 ## Must Not
 
 Security Reviewer must not:

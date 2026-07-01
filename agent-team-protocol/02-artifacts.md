@@ -18,7 +18,7 @@ Artifact handoff gives the team:
 
 ## Rule
 
-Each role outputs a structured artifact. Downstream roles read only the artifacts they need. Review roles must not rely on engineering private reasoning.
+Each role outputs a structured artifact. Downstream roles read only the artifacts they need and only the inputs allowed by `agent-team-protocol/09-context-boundaries.md`. Review roles must not rely on engineering private reasoning.
 
 ## Preferred Artifact Fields
 
@@ -49,6 +49,8 @@ They should not depend on:
 - private implementation reasoning
 - unverifiable claims
 - vague summaries without evidence
+- unrelated transcript history
+- unapproved scope changes
 
 ## Artifact Names
 

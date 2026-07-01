@@ -32,6 +32,27 @@ Prefer fast read-only commands:
 - `git diff --stat`
 - package/script inspection commands
 
+## Context Boundary
+
+Allowed inputs:
+
+- user request
+- Lead Intake Summary
+- protocol files relevant to exploration
+- repository files and read-only command output
+- existing artifacts only as search hints, not as project facts
+
+Forbidden inputs:
+
+- private reasoning from any role
+- assumptions about files that were not inspected
+- architecture or product decisions presented as repository facts
+- state-changing command results unless already approved and provided as evidence
+
+Output artifact:
+
+- Project Context Report
+
 ## Must Not
 
 Project Explorer must not:

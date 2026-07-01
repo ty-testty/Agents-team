@@ -15,6 +15,7 @@ The goal is not to simulate a free-form group chat. The goal is to run a discipl
 - Agents do not freely chat with each other.
 - Each gate produces an artifact or a clearly stated equivalent in the working transcript.
 - Downstream agents consume artifacts, not private reasoning from upstream agents.
+- Each role must obey the input boundary rules in `agent-team-protocol/09-context-boundaries.md`.
 - Implementation always requires explicit user approval.
 - Fast paths may shorten planning, but they must not skip user permission.
 - Release requires QA, Code Review, and Security Review.
@@ -33,7 +34,7 @@ Keep specialist viewpoints separate:
 - Code Review must judge maintainability and correctness independently.
 - Security Review must judge release risk independently.
 
-When actual subagents are unavailable, simulate role separation by using phases and not letting implementation reasoning override review judgment.
+When actual subagents are unavailable, simulate role separation with bounded role packets, allowed inputs, forbidden inputs, artifact-only handoff, and independent review judgment.
 
 ## Non-Negotiables
 

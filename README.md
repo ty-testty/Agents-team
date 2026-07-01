@@ -31,6 +31,41 @@ The design follows the roles and gates defined in this conversation:
 
 The important idea is artifact handoff. Agents do not freely chat with each other. Each gate writes a structured artifact, and the next gate consumes only the artifacts it needs.
 
+## Engineering Model
+
+This protocol uses a sub-agent orchestration model with workflow gates.
+
+In practical terms:
+
+- The user speaks only to Lead.
+- Lead acts as the orchestrator.
+- Each role acts like a specialist sub-agent.
+- Each specialist receives only the inputs it is allowed to use.
+- Each specialist returns an artifact instead of joining a free-form group chat.
+- Review roles judge evidence independently instead of trusting implementation reasoning.
+
+When a real multi-agent runtime is available, each role should run in its own context window.
+
+When only one Codex conversation is available, the protocol simulates sub-agent separation through `agent-team-protocol/09-context-boundaries.md`. Lead packages the allowed inputs for each role, and each role must ignore forbidden inputs such as another role's private reasoning, unrelated transcript history, or unapproved scope changes.
+
+The team also uses Agent Team-style coordination, but only through controlled artifacts, gates, and loops:
+
+- artifacts preserve decisions and evidence
+- gates prevent skipped work
+- loops send failed work back to the nearest responsible role
+- QA, Code Review, and Security remain independent release checks
+
+The result is intentionally not a free-chat agent swarm. It is closer to:
+
+```text
+Lead orchestrator
+ -> isolated specialist sub-agents
+ -> artifact handoff
+ -> gated review
+ -> repair loops
+ -> final release decision
+```
+
 ## Quick Start
 
 Copy these into the root of any project where you want Codex to follow this team protocol:
@@ -137,3 +172,14 @@ Scope changed
  -> Product Gate
  -> regenerate downstream artifacts
 ```
+
+## Design References
+
+This protocol is influenced by public agent architecture patterns from OpenAI and Anthropic:
+
+- [OpenAI Codex Subagents](https://developers.openai.com/codex/concepts/subagents)
+- [OpenAI Agents SDK Handoffs](https://openai.github.io/openai-agents-python/handoffs/)
+- [Anthropic Claude Code Subagents](https://code.claude.com/docs/en/sub-agents)
+- [Anthropic: Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)
+
+The protocol combines these ideas into a repo-portable Markdown system: sub-agent style role isolation, artifact handoff, explicit gates, user approval, review independence, security veto, and recovery loops.

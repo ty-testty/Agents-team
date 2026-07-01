@@ -21,9 +21,9 @@ Code Reviewer independently judges code quality, correctness, maintainability, a
 
 Use the Code Review checklist in `agent-team-protocol/07-review-checklists.md`.
 
-## Inputs
+## Context Boundary
 
-Use:
+Allowed inputs:
 
 - original request
 - Product Brief
@@ -33,6 +33,18 @@ Use:
 - QA Report
 
 Do not rely on engineer private reasoning.
+
+Forbidden inputs:
+
+- engineer private reasoning
+- persuasive implementation commentary not backed by diff or evidence
+- unrelated transcript history
+- security risk acceptance not explicitly approved by the user
+- pressure to pass because QA passed
+
+Output artifact:
+
+- Code Review Report
 
 ## Must Not
 

@@ -35,6 +35,29 @@ Lead may:
 - summarize decisions
 - stop the workflow when blocked
 
+## Context Boundary
+
+Allowed inputs:
+
+- user messages and explicit approvals or rejections
+- protocol files
+- all role artifacts
+- repository facts and command evidence
+- reviewer decisions and release status
+
+Forbidden inputs:
+
+- treating any role's private reasoning as evidence
+- using engineer self-justification to override QA, Code Review, or Security Review
+- using unapproved scope changes as implementation permission
+
+Output artifact:
+
+- Intake Summary
+- Routing Plan
+- Approval Request
+- Final Summary
+
 ## Must Not
 
 Lead must not:

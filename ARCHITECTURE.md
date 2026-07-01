@@ -94,28 +94,44 @@ flowchart LR
 
 ## Rejection And Recovery Loops
 
-User rejection is not always the end. Lead classifies the reason and sends the work back to the nearest responsible gate.
+User rejection is not always the end. Lead classifies the reason, sends the work back to the nearest responsible gate, then returns the corrected work to the matching approval or review gate.
 
 ```mermaid
-flowchart TB
-    REJ["User rejects approval"] --> LEAD["&quot;Lead&quot; classifies reason"]
+flowchart LR
+    subgraph UserLoop["User Approval Loop"]
+        UFAIL["User rejects<br/>or changes scope"] --> ULEAD["&quot;Lead&quot;<br/>classifies reason"]
+        ULEAD --> UCANCEL["Cancel task<br/>End"]
+        ULEAD --> UOWNER["Responsible Gate<br/>Product / Architecture / DevOps / Security"]
+        UOWNER --> UREWORK["Revise artifact"]
+        UREWORK --> UAPPROVAL["User Approval Gate"]
+        UAPPROVAL -. rejects again .-> UFAIL
+    end
 
-    LEAD --> CANCEL["Cancel task<br/>End"]
-    LEAD --> SCOPE["Scope / product change<br/>Product Gate"]
-    LEAD --> TECH["Technical concern<br/>Architecture Gate"]
-    LEAD --> REL["Release / cost concern<br/>DevOps Feasibility"]
-    LEAD --> RISK["Risk concern<br/>Security or Architecture"]
+    subgraph QALoop["QA Loop"]
+        QAFAIL["QA fails"] --> QAFIX["Implementation Gate<br/>Frontend / Backend / DevOps"]
+        QAFIX --> QARERUN["Rerun QA Gate"]
+        QARERUN -. still fails .-> QAFAIL
+    end
 
-    QAFAIL["QA fails"] --> IMPL["Implementation Gate"]
+    subgraph ReviewLoop["Code Review Loop"]
+        CRBLOCK["Code Review blocks"] --> CRLEAD["&quot;Lead&quot;<br/>classifies issue"]
+        CRLEAD --> CRFIX["Implementation Gate"]
+        CRLEAD --> CRARCH["Architecture Gate"]
+        CRFIX --> CRRERUN["Rerun Code Review"]
+        CRARCH --> CRRERUN
+        CRRERUN -. still blocked .-> CRBLOCK
+    end
 
-    CRBLOCK["Code Review blocks"] --> CRWHY["&quot;Lead&quot; classifies issue"]
-    CRWHY --> IMPLISSUE["Implementation issue<br/>Implementation Gate"]
-    CRWHY --> ARCHISSUE["Architecture issue<br/>Architecture Gate"]
-
-    SECBLOCK["Security blocks"] --> SECWHY["&quot;Lead&quot; classifies issue"]
-    SECWHY --> FIX["Fix needed<br/>Implementation Gate"]
-    SECWHY --> DESIGN["Design issue<br/>Architecture Gate"]
-    SECWHY --> ACCEPT["Risk acceptance needed<br/>User Approval Gate"]
+    subgraph SecurityLoop["Security Loop"]
+        SECBLOCK["Security blocks"] --> SECLEAD["&quot;Lead&quot;<br/>classifies issue"]
+        SECLEAD --> SECFIX["Implementation Gate"]
+        SECLEAD --> SECARCH["Architecture Gate"]
+        SECLEAD --> SECRISK["Risk Acceptance<br/>User Approval Gate"]
+        SECFIX --> SECRERUN["Rerun Security Gate"]
+        SECARCH --> SECRERUN
+        SECRISK --> SECRERUN
+        SECRERUN -. still blocked .-> SECBLOCK
+    end
 ```
 
 ## Core Principles

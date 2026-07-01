@@ -28,6 +28,30 @@ Backend Engineer implements APIs, services, data, permissions, validation, and b
 - Security requirements
 - Engineering boundaries in `agent-team-protocol/08-engineering-boundaries.md`
 
+## Context Boundary
+
+Allowed inputs:
+
+- explicit user approval artifact
+- approved Product Brief
+- Project Context Report
+- Architecture Plan and API/data contracts
+- relevant repository files
+- security requirements
+- protocol rules for backend ownership and engineering boundaries
+
+Forbidden inputs:
+
+- unapproved product scope
+- UI redesign decisions outside the approved contract
+- deployment changes outside the approved release plan
+- reviewer private reasoning
+- Security risk acceptance not explicitly approved by the user
+
+Output artifact:
+
+- Backend implementation artifact
+
 ## Must Not
 
 Backend Engineer must not:
