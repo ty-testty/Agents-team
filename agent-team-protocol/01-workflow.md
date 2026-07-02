@@ -58,7 +58,7 @@ Artifact: `02-project-context.md`
 
 ## 3. Architecture Gate
 
-Research Architect creates the technical plan.
+Architect creates the technical plan.
 
 It defines:
 
@@ -165,25 +165,25 @@ Fast path still requires explicit user approval before execution.
 ### Tiny Documentation Or Text Change
 
 ```text
-Lead -> Project Explorer -> Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
+Lead -> Project Explorer -> User Approval -> Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
 ```
 
 ### Pure Backend Task
 
 ```text
-Lead -> Product Gate if scope matters -> Project Explorer -> Research Architect -> User Approval -> Backend Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
+Lead -> Product Gate if scope matters -> Project Explorer -> Architect -> User Approval -> Backend Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
 ```
 
 ### Pure Frontend Task
 
 ```text
-Lead -> Product Designer -> Project Explorer -> Research Architect -> User Approval -> Frontend Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
+Lead -> Product Designer -> Project Explorer -> Architect -> User Approval -> Frontend Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
 ```
 
 ### Pure DevOps Task
 
 ```text
-Lead -> Project Explorer -> Research Architect if needed -> DevOps Engineer -> User Approval when release behavior changes -> QA -> Code Reviewer -> Security Reviewer -> Final
+Lead -> Project Explorer -> Architect if needed -> User Approval -> DevOps Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
 ```
 
 Do not remove QA, Code Review, or Security Review unless the user explicitly waives them.
@@ -196,4 +196,4 @@ For a first real test of this protocol, use:
 agent-team-protocol/examples/small-app-trial.md
 ```
 
-This trial intentionally exercises Product Designer, Project Explorer, Research Architect, Frontend Engineer, QA Engineer, Code Reviewer, Security Reviewer, and Lead without requiring backend or cloud infrastructure.
+This trial intentionally exercises Product Designer, Project Explorer, Architect, Frontend Engineer, QA Engineer, Code Reviewer, Security Reviewer, and Lead without requiring backend or cloud infrastructure.

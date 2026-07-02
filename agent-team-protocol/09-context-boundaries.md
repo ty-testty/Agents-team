@@ -57,11 +57,17 @@ Objective:
 Allowed Inputs:
 Forbidden Inputs:
 Approved Scope:
+Evidence Included:
+Evidence Missing:
 Required Output Artifact:
 Known Unknowns:
 ```
 
 Lead may summarize prior work, but the summary must be evidence-based and must not include private reasoning.
+
+If the transcript or repository context is large, Lead should provide a short artifact digest instead of copying broad history. The digest should separate facts, decisions, assumptions, and open questions.
+
+If evidence is missing and the missing evidence could change correctness, safety, scope, or release readiness, the role must return `BLOCKED` or ask Lead for a sanitized packet.
 
 ## Boundary Violation
 
@@ -89,6 +95,20 @@ Review evidence should not come from:
 - private implementation reasoning
 - "should work" statements
 - summaries without evidence
+
+## Lightweight Doubt Check
+
+For high-impact claims, planning decisions, and release decisions, use this short check:
+
+```text
+Claim:
+Evidence:
+What could make this wrong?
+Cheapest verification:
+Decision:
+```
+
+Use it when a decision involves security, auth, data loss, migrations, new dependencies, deployment behavior, external APIs, or broad refactors. Do not use it for trivial text-only changes unless risk is unclear.
 
 ## Artifact Privacy
 

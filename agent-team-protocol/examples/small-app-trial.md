@@ -29,7 +29,7 @@ Using the Agent Team protocol, build a tiny task board app in this repository. K
 Lead
  -> Product Designer
  -> Project Explorer
- -> Research Architect
+ -> Architect
  -> User Approval
  -> Frontend Engineer
  -> QA Engineer
@@ -47,7 +47,7 @@ Good behavior:
 - Lead asks for approval before implementation.
 - Product Designer defines empty, done, and filter states.
 - Project Explorer checks existing files before coding.
-- Research Architect keeps the solution simple.
+- Architect keeps the solution simple.
 - Frontend Engineer avoids unnecessary dependencies.
 - QA checks mobile/desktop and empty states.
 - Code Reviewer checks local persistence and state edge cases.

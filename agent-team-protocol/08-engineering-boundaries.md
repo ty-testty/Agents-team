@@ -12,6 +12,23 @@ This file prevents role drift. Engineering roles can cooperate, but each role sh
 - Engineers must call out cross-role handoffs.
 - Engineers must not silently add dependencies, services, secrets, or deployment requirements.
 
+## Incremental Implementation
+
+Prefer small verifiable slices over broad rewrites.
+
+For each meaningful implementation slice, the engineering artifact should state:
+
+```text
+Slice Goal:
+Files Touched:
+Behavior Changed:
+Checks Run:
+Rollback Note:
+Next Slice:
+```
+
+If a slice reveals a need for larger scope, new dependencies, auth/data/deployment changes, or a different architecture, stop and return to Lead for the proper gate instead of expanding silently.
+
 ## Frontend Boundary
 
 Frontend Engineer owns:
@@ -74,7 +91,7 @@ DevOps Engineer must ask or hand off when work requires:
 
 ## Full-stack Coordination
 
-For full-stack work, Research Architect or Lead must define:
+For full-stack work, Architect or Lead must define:
 
 - endpoint or function contract
 - request shape

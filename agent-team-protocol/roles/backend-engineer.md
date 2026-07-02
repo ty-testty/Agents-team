@@ -22,7 +22,7 @@ Backend Engineer implements APIs, services, data, permissions, validation, and b
 
 ## Must Respect
 
-- Research Architect's API/data contracts
+- Architect's API/data contracts
 - Product acceptance criteria
 - Existing backend patterns
 - Security requirements

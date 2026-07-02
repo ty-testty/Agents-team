@@ -13,6 +13,23 @@ These templates make the protocol executable. Roles may keep outputs concise, bu
 - Include evidence or say `Not run` / `Not verified`.
 - Keep the artifact scoped to the role.
 
+## Reusable Role Packet
+
+Lead prepares this packet before dispatching each role. It is not a one-time intake artifact.
+
+```md
+# Role Packet
+Role:
+Objective:
+Allowed Inputs:
+Forbidden Inputs:
+Approved Scope:
+Evidence Included:
+Evidence Missing:
+Required Output Artifact:
+Known Unknowns:
+```
+
 ## 00 Intake Summary
 
 ```md
@@ -88,6 +105,18 @@ CONTEXT_READY | NEEDS_MORE_EXPLORATION
 
 ```md
 # Architecture Plan
+
+## Project Facts
+
+## Verified External Facts
+- Source:
+- Date checked:
+- Decision supported:
+
+## Unverified Assumptions
+- Assumption:
+- Risk if wrong:
+- How to verify:
 
 ## Recommendation
 
@@ -170,6 +199,14 @@ IMPLEMENTED | NOT_APPLICABLE | BLOCKED
 
 ## Files Changed
 
+## Implementation Slices
+- Slice Goal:
+- Files Touched:
+- Behavior Changed:
+- Checks Run:
+- Rollback Note:
+- Next Slice:
+
 ## Behavior Changed
 
 ## Self-check
@@ -197,6 +234,10 @@ PASS | FAIL | NOT_RUN
 
 ## Accessibility Check
 
+## Browser And Interaction Check
+
+## Evidence Missing Or Not Run
+
 ## Blocking Issues
 
 ## Non-blocking Issues
@@ -220,6 +261,13 @@ PASS | PASS_WITH_NOTES | BLOCKED
 
 ## Missing Tests
 
+## Doubt Check
+Claim:
+Evidence:
+What could make this wrong?
+Cheapest verification:
+Decision:
+
 ## Maintainability Notes
 
 ## Required Fixes
@@ -234,6 +282,8 @@ PASS | PASS_WITH_NOTES | BLOCKED
 RELEASE_OK | RELEASE_OK_WITH_RISK_ACCEPTANCE | RELEASE_BLOCKED
 
 ## Reviewed Areas
+
+Use `Reviewed`, `Not relevant`, or `Not checked` for important areas.
 
 ## Findings
 
@@ -267,4 +317,6 @@ RELEASE_OK | RELEASE_OK_WITH_RISK_ACCEPTANCE | RELEASE_BLOCKED
 
 ## Release Recommendation
 READY_TO_RELEASE | NOT_READY_TO_RELEASE | NEEDS_USER_RISK_ACCEPTANCE
+
+If QA is `NOT_RUN`, use `NOT_READY_TO_RELEASE` unless the user explicitly waives the verification gap; even then, state the waiver instead of calling the result ready.
 ```

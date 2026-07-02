@@ -21,7 +21,7 @@ The design follows the roles and gates defined in this conversation:
 - Lead
 - Product Designer
 - Project Explorer
-- Research Architect
+- Architect
 - Frontend Engineer
 - Backend Engineer
 - DevOps Engineer
@@ -66,6 +66,19 @@ Lead orchestrator
  -> final release decision
 ```
 
+## Quality Rules
+
+The protocol keeps extra rigor lightweight. It does not require a full ceremony for every small task, but it does add stronger checks where mistakes are costly:
+
+- Lead packages each role with allowed inputs, evidence included, evidence missing, and expected output.
+- Architect separates repository facts, verified external facts, assumptions, and recommendations.
+- Engineers work in small implementation slices with checks and rollback notes.
+- QA checks browser behavior, console errors, and core interactions when UI is involved and tools are available.
+- Code Reviewer uses a short doubt check for the riskiest correctness claim.
+- Security Reviewer marks important areas as `Reviewed`, `Not relevant`, or `Not checked`.
+
+These rules are meant to improve independence and evidence quality without turning every task into a heavy process.
+
 ## Quick Start
 
 Copy these into the root of any project where you want Codex to follow this team protocol:
@@ -91,7 +104,7 @@ Codex should treat you as speaking to Lead, then route work through the protocol
 Lead
  -> Product Designer
  -> Project Explorer
- -> Research Architect
+ -> Architect
  -> DevOps Engineer, early release feasibility
  -> User Approval
  -> Frontend Engineer / Backend Engineer / DevOps Engineer
@@ -163,7 +176,7 @@ Code Review blocked
  -> Code Reviewer rereview
 
 Security blocked
- -> Research Architect or responsible engineer
+ -> Architect or responsible engineer
  -> QA
  -> Code Review
  -> Security rereview
@@ -171,15 +184,18 @@ Security blocked
 Scope changed
  -> Product Gate
  -> regenerate downstream artifacts
+ -> user approval
 ```
 
 ## Design References
 
-This protocol is influenced by public agent architecture patterns from OpenAI and Anthropic:
+This protocol is influenced by public agent architecture and engineering workflow patterns from OpenAI, Anthropic, and agent-skills:
 
 - [OpenAI Codex Subagents](https://developers.openai.com/codex/concepts/subagents)
 - [OpenAI Agents SDK Handoffs](https://openai.github.io/openai-agents-python/handoffs/)
 - [Anthropic Claude Code Subagents](https://code.claude.com/docs/en/sub-agents)
 - [Anthropic: Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)
+- [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)
+- [agent-skills: Orchestration Patterns](https://github.com/addyosmani/agent-skills/blob/main/references/orchestration-patterns.md)
 
 The protocol combines these ideas into a repo-portable Markdown system: sub-agent style role isolation, artifact handoff, explicit gates, user approval, review independence, security veto, and recovery loops.

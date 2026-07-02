@@ -15,7 +15,7 @@ Release readiness is decided by evidence, not optimism.
 - `RELEASE_OK_WITH_RISK_ACCEPTANCE` requires explicit user acceptance.
 - If tests cannot be run, say so in the final summary.
 - If external facts were needed but could not be verified, say so.
-- If QA is `NOT_RUN`, release can be recommended only when the user explicitly accepts that verification gap.
+- If QA is `NOT_RUN`, release must be `NOT_READY_TO_RELEASE`; the user may explicitly waive the verification gap, but the protocol must not describe the result as ready.
 - If Code Review is `BLOCKED`, release must not be recommended.
 
 ## Required Final Summary

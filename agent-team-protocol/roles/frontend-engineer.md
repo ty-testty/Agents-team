@@ -23,7 +23,7 @@ Frontend Engineer implements user-facing UI and browser/client behavior inside t
 ## Must Respect
 
 - Product Designer's UX flow and UI states
-- Research Architect's contracts
+- Architect's contracts
 - Existing design system and component patterns
 - Existing project style
 - Engineering boundaries in `agent-team-protocol/08-engineering-boundaries.md`

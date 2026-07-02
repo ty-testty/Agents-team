@@ -32,7 +32,7 @@ Code Review blocking issue
 
 ```text
 Security RELEASE_BLOCKED
- -> Research Architect if design must change, otherwise responsible engineer
+ -> Architect if design must change, otherwise responsible engineer
  -> fix
  -> QA
  -> Code Review
@@ -43,7 +43,7 @@ Security RELEASE_BLOCKED
 
 ```text
 Architecture issue
- -> Product Designer, Project Explorer, or Research Architect
+ -> Product Designer, Project Explorer, or Architect
  -> revised plan
  -> user approval if scope or risk changed
 ```
@@ -61,7 +61,7 @@ Scope changed
 
 ```text
 Release feasibility issue
- -> Research Architect if plan must change
+ -> Architect if plan must change
  -> DevOps Engineer if runtime plan must change
  -> user approval if release impact changed
 ```
@@ -71,7 +71,7 @@ Release feasibility issue
 ```text
 Late product/UX issue
  -> Product Designer
- -> Research Architect if technical shape changes
+ -> Architect if technical shape changes
  -> responsible engineer
  -> QA
  -> Code Review

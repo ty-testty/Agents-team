@@ -27,7 +27,7 @@ Before doing non-trivial work, read these files in order:
 11. `agent-team-protocol/roles/lead.md`
 12. `agent-team-protocol/roles/product-designer.md`
 13. `agent-team-protocol/roles/project-explorer.md`
-14. `agent-team-protocol/roles/research-architect.md`
+14. `agent-team-protocol/roles/architect.md`
 15. `agent-team-protocol/roles/frontend-engineer.md`
 16. `agent-team-protocol/roles/backend-engineer.md`
 17. `agent-team-protocol/roles/devops-engineer.md`

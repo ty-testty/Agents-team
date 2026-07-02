@@ -30,12 +30,15 @@ UX/UI:
 - Buttons and controls have clear states.
 - Forms have validation and useful errors.
 - Focus, keyboard, labels, and contrast are acceptable at a basic level.
+- Browser console errors are checked when a browser can be run.
+- Main keyboard and pointer/touch interactions work when relevant.
 
 Evidence:
 
 - Include command output summary.
 - Include screenshots or manual steps for UI when possible.
 - Mark anything unverified.
+- If screenshots, browser checks, tests, lint, typecheck, or build are not run, state why.
 
 ## Code Review Checklist
 
@@ -66,6 +69,13 @@ Integration:
 - Frontend and backend contracts match.
 - Migration and deployment assumptions are clear.
 - Configuration changes are documented.
+
+Doubt check:
+
+- Identify the riskiest correctness claim.
+- State the evidence for that claim.
+- State what could make it wrong.
+- Recommend the cheapest missing verification when evidence is weak.
 
 ## Security Checklist
 
@@ -101,6 +111,11 @@ Dependencies and config:
 - Secrets are not committed.
 - Env vars are documented without values.
 - Deployment exposure does not widen accidentally.
+
+Review status:
+
+- Mark important areas as `Reviewed`, `Not relevant`, or `Not checked`.
+- Treat `Not checked` on auth, authorization, secrets, data exposure, or deployment safety as a potential blocker unless clearly irrelevant.
 
 Decision:
 
