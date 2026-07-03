@@ -82,6 +82,8 @@ If a role receives forbidden input, it must:
 
 QA Engineer, Code Reviewer, and Security Reviewer must treat implementation claims as claims, not proof.
 
+For medium-risk and high-risk tasks, reviewers should inspect artifacts, diff, command output, screenshots, logs, and tests before relying on implementation summaries.
+
 Review evidence should come from:
 
 - code or diff

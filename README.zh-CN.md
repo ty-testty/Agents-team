@@ -72,10 +72,13 @@ Lead orchestrator
 
 - Lead 为每个 role 打包 allowed inputs、evidence included、evidence missing 和 expected output。
 - Architect 区分 repository facts、verified external facts、assumptions 和 recommendations。
+- Architect 为 verified external facts 记录 source URL、date checked、confidence 和 supported decision。
 - Engineers 以小的 implementation slices 工作，并记录 checks 和 rollback notes。
 - 当涉及 UI 且工具可用时，QA 检查 browser behavior、console errors 和 core interactions。
 - Code Reviewer 对最有风险的 correctness claim 做一个简短 doubt check。
 - Security Reviewer 把重要区域标记为 `Reviewed`、`Not relevant` 或 `Not checked`。
+- 只要触发 must-ask 条件，就禁止 fast path。
+- 同类 blocking failure 连续 2 次未解决后停止 loop。
 
 这些规则的目的，是在不把每个任务变成重流程的前提下，提高独立性和 evidence quality。
 
@@ -144,6 +147,9 @@ agent-team-protocol/roles/
 agent-team-protocol/examples/
   在真实仓库中测试该 protocol 的 trial workflows。
 
+agent-team-protocol/artifacts/
+  可选的临时任务 artifacts。默认被 git 忽略，除非用户明确要求保留。
+
 INSTALL.md
   复制/安装到另一个仓库的说明。
 ```
@@ -161,6 +167,8 @@ INSTALL.md
 - Reviewers 对 release readiness 有分歧。
 - Security 返回 `RELEASE_OK_WITH_RISK_ACCEPTANCE` 或 `RELEASE_BLOCKED`。
 - 任务明显超出原始 scope 或 budget。
+
+如果触发以上任一条件，就不允许 fast path。
 
 ## Loop Rules
 
@@ -185,6 +193,11 @@ Scope changed
  -> Product Gate
  -> regenerate downstream artifacts
  -> user approval
+
+同类 blocking failure 连续 2 次未解决
+ -> stop
+ -> Lead 汇报失败内容、已尝试内容、剩余选项和推荐下一步
+ -> 第 3 次尝试需要用户明确批准
 ```
 
 ## Design References

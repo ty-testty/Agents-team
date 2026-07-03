@@ -20,6 +20,26 @@ Artifact handoff gives the team:
 
 Each role outputs a structured artifact. Downstream roles read only the artifacts they need and only the inputs allowed by `agent-team-protocol/09-context-boundaries.md`. Review roles must not rely on engineering private reasoning.
 
+## Storage And Lifecycle
+
+Preferred file location when artifacts are written:
+
+```text
+agent-team-protocol/artifacts/<task-id>/
+```
+
+Artifacts are temporary by default and should not be committed unless the user explicitly asks to preserve them or the task requires an audit trail. This repository ignores `agent-team-protocol/artifacts/` by default.
+
+If the user asks to commit artifacts, say that the directory is ignored by default and either intentionally force-add the specific artifact files or copy the final artifact summary to a non-ignored documentation location.
+
+Archive artifacts only for high-risk, release-relevant, security-sensitive, or user-requested tasks. A typical archive path is:
+
+```text
+agent-team-protocol/artifacts/archive/<task-id>/
+```
+
+For small tasks, temporary experiments, typo fixes, or low-risk changes, delete or leave ignored artifacts after the task is complete.
+
 ## Preferred Artifact Fields
 
 Use these fields when practical:

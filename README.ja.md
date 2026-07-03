@@ -72,10 +72,13 @@ Lead orchestrator
 
 - Lead は各 role に対して、allowed inputs、evidence included、evidence missing、expected output をパッケージします。
 - Architect は repository facts、verified external facts、assumptions、recommendations を分けます。
+- Architect は verified external facts について、source URL、date checked、confidence、supported decision を記録します。
 - Engineers は小さな implementation slices で作業し、checks と rollback notes を残します。
 - UI が関係し、tools が利用できる場合、QA は browser behavior、console errors、core interactions を確認します。
 - Code Reviewer は最もリスクの高い correctness claim に対して短い doubt check を使います。
 - Security Reviewer は重要領域を `Reviewed`、`Not relevant`、`Not checked` として記録します。
+- must-ask 条件に該当する場合、fast path は禁止されます。
+- 同じ blocking failure が 2 回連続で未解決の場合、loop を停止します。
 
 これらのルールは、すべてのタスクを重いプロセスにせず、独立性と evidence quality を高めるためのものです。
 
@@ -144,6 +147,9 @@ agent-team-protocol/roles/
 agent-team-protocol/examples/
   実際のリポジトリで protocol をテストするための trial workflows。
 
+agent-team-protocol/artifacts/
+  任意の一時 task artifacts。ユーザーが明示的に保存を求めない限り、git では無視されます。
+
 INSTALL.md
   別リポジトリへのコピー/インストール手順。
 ```
@@ -161,6 +167,8 @@ protocol は、次の場合に続行前にユーザーへ確認します：
 - Reviewers が release readiness について不一致の場合。
 - Security が `RELEASE_OK_WITH_RISK_ACCEPTANCE` または `RELEASE_BLOCKED` を返した場合。
 - タスクが元の scope または budget を大きく超える場合。
+
+これらの条件のいずれかに該当する場合、fast path は使えません。
 
 ## Loop Rules
 
@@ -185,6 +193,11 @@ Scope changed
  -> Product Gate
  -> regenerate downstream artifacts
  -> user approval
+
+同じ blocking failure が 2 回連続で未解決
+ -> stop
+ -> Lead が失敗内容、試したこと、残りの選択肢、推奨する次の一手を報告
+ -> 3 回目の試行にはユーザーの明示的な承認が必要
 ```
 
 ## Design References

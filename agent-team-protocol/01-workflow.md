@@ -160,12 +160,14 @@ Fast path is allowed only when:
 - rollback is obvious
 - the user did not ask for broader product exploration
 
+Fast path is forbidden if any `Must Ask` trigger in `agent-team-protocol/03-ask-user-policy.md` applies.
+
 Fast path still requires explicit user approval before execution.
 
 ### Tiny Documentation Or Text Change
 
 ```text
-Lead -> Project Explorer -> User Approval -> Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
+Lead -> Project Explorer -> User Approval -> Relevant Engineer -> QA -> Code Reviewer -> Security Reviewer -> Final
 ```
 
 ### Pure Backend Task

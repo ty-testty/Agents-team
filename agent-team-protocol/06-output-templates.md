@@ -27,6 +27,7 @@ Approved Scope:
 Evidence Included:
 Evidence Missing:
 Required Output Artifact:
+Artifact Location:
 Known Unknowns:
 ```
 
@@ -109,8 +110,10 @@ CONTEXT_READY | NEEDS_MORE_EXPLORATION
 ## Project Facts
 
 ## Verified External Facts
-- Source:
+- Claim:
+- Source URL:
 - Date checked:
+- Confidence: High | Medium | Low
 - Decision supported:
 
 ## Unverified Assumptions

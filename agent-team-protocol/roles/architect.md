@@ -46,8 +46,10 @@ When source verification matters, include:
 
 ```text
 Verified Sources:
-- Source:
+- Claim:
+- Source URL:
 - Date checked:
+- Confidence: High | Medium | Low
 - Decision supported:
 
 Unverified Assumptions:

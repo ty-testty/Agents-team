@@ -80,9 +80,14 @@ Late product/UX issue
 
 ## Loop Limit
 
-After repeated failure of the same kind, stop and ask the user with a concise summary:
+If the same blocking failure appears 2 consecutive times without resolution, stop the loop and ask the user.
+
+A third attempt requires explicit user approval.
+
+Lead must report:
 
 - what failed
 - what was tried
+- why it is still blocked
 - what options remain
 - recommended next step

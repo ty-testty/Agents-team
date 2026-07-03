@@ -13,6 +13,14 @@ agent-team-protocol/
 
 `AGENTS.md` is the Codex loader. `agent-team-protocol/` contains the detailed rules.
 
+Task artifacts, when written as files, should go under:
+
+```text
+agent-team-protocol/artifacts/<task-id>/
+```
+
+That directory is temporary by default and should be ignored unless the user explicitly asks to preserve artifacts.
+
 ## Minimal Install
 
 From this repository:

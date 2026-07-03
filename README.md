@@ -72,10 +72,13 @@ The protocol keeps extra rigor lightweight. It does not require a full ceremony 
 
 - Lead packages each role with allowed inputs, evidence included, evidence missing, and expected output.
 - Architect separates repository facts, verified external facts, assumptions, and recommendations.
+- Architect records source URL, date checked, confidence, and supported decision for verified external facts.
 - Engineers work in small implementation slices with checks and rollback notes.
 - QA checks browser behavior, console errors, and core interactions when UI is involved and tools are available.
 - Code Reviewer uses a short doubt check for the riskiest correctness claim.
 - Security Reviewer marks important areas as `Reviewed`, `Not relevant`, or `Not checked`.
+- Fast paths are forbidden whenever a must-ask trigger applies.
+- The same blocking failure stops the loop after 2 consecutive unresolved attempts.
 
 These rules are meant to improve independence and evidence quality without turning every task into a heavy process.
 
@@ -144,6 +147,9 @@ agent-team-protocol/roles/
 agent-team-protocol/examples/
   Trial workflows for testing the protocol in a real repo.
 
+agent-team-protocol/artifacts/
+  Optional temporary task artifacts. Ignored by git unless the user explicitly asks to preserve them.
+
 INSTALL.md
   Copy/install instructions for another repository.
 ```
@@ -161,6 +167,8 @@ The protocol should ask the user before continuing when:
 - Reviewers disagree on release readiness.
 - Security returns `RELEASE_OK_WITH_RISK_ACCEPTANCE` or `RELEASE_BLOCKED`.
 - The task expands materially beyond the original scope or budget.
+
+Fast path is not allowed when any of these triggers applies.
 
 ## Loop Rules
 
@@ -185,6 +193,11 @@ Scope changed
  -> Product Gate
  -> regenerate downstream artifacts
  -> user approval
+
+Same blocking failure repeated 2 consecutive times
+ -> stop
+ -> Lead reports what failed, what was tried, remaining options, and recommended next step
+ -> third attempt requires explicit user approval
 ```
 
 ## Design References
