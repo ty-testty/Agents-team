@@ -1,10 +1,10 @@
-# Agent Team Protocol
+# Agent Team
 
-一个可移植的 Markdown 协议，用来让 Codex 在任何代码仓库中像一个带 gate 的 AI 软件开发团队一样工作。
+一个可移植的 Markdown agent team，用来让 Codex 在任何代码仓库中像一个带 gate 的 AI 软件开发团队一样工作。
 
 ## Developer Note
 
-这个项目现在刻意不包含自定义 runtime。runtime 就是 Codex 本身。`AGENTS.md` 告诉 Codex 要读取哪些内容，`agent-team-protocol/` 保存稳定的团队规则。
+这个项目刻意不包含自定义 runtime。runtime 就是 Codex 本身。`AGENTS.md` 告诉 Codex 要读取哪些内容，`agent-team-protocol/` 保存稳定的团队规则。
 
 维护这个仓库时，请保持这个区别清楚：
 
@@ -15,6 +15,37 @@
 对于 Codex 风格的使用方式，本仓库包含 [AGENTS.md](AGENTS.md)，这是一个 AI 可读取的 loader 文件。详细规则位于 `agent-team-protocol/`。把 `AGENTS.md` 和 `agent-team-protocol/` 一起复制到任何目标仓库根目录后，你就可以正常和 Codex 对话，同时让 Codex 遵循相同的团队角色、gate、artifact handoff、loop rules 和 release checks。
 
 复制/安装说明见 [INSTALL.md](INSTALL.md)。
+
+## Use Cases
+
+Agent Team 最适合个人开发和小团队软件项目：你希望 AI 帮你开发，但不想失去顺序、review 质量和 release 安全。
+
+适合的场景：
+
+- 个人项目和小团队仓库
+- MVP、原型、小型 SaaS 产品和 Web App
+- 给现有项目加功能
+- bugfix 和小范围重构
+- 前端 UI/UX 改进
+- API、auth、权限和隐私相关改动
+- 发布前的 QA、Code Review 和 Security Review
+
+最合适的任务大小，是大约 30 分钟到 2 天内可以完成的 feature、fix 或 refactor。更大的工作应该由 Lead 拆成更小的 gated tasks。
+
+## Not A Runtime
+
+Agent Team 是给 Codex 使用的 Markdown 规则系统，不是自定义 agent runtime。
+
+它不包含：
+
+- server
+- database
+- queue
+- vector memory
+- background workers
+- Codex 之外的自动 multi-agent orchestration
+
+真正的 runtime 系统适合产品化 agent platform、CI bot、长期后台任务、持久 memory、logs、evals 或自动任务执行。这个项目刻意更轻：把 `AGENTS.md` 和 `agent-team-protocol/` 复制到项目里，然后正常和 Codex 协作。
 
 这个设计遵循本次对话中定义的角色和 gate：
 

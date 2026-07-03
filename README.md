@@ -1,10 +1,10 @@
-# Agent Team Protocol
+# Agent Team
 
-A portable Markdown protocol for making Codex act like a gated AI software development team inside any repository.
+A portable Markdown agent team for making Codex act like a gated AI software development team inside any repository.
 
 ## Developer Note
 
-This project intentionally does not include a custom runtime anymore. The runtime is Codex itself. `AGENTS.md` tells Codex what to read, and `agent-team-protocol/` contains the durable team rules.
+This project intentionally does not include a custom runtime. The runtime is Codex itself. `AGENTS.md` tells Codex what to read, and `agent-team-protocol/` contains the durable team rules.
 
 When maintaining this repo, keep this distinction clear:
 
@@ -15,6 +15,37 @@ When maintaining this repo, keep this distinction clear:
 For Codex-style usage, this repository includes [AGENTS.md](AGENTS.md), an AI-readable loader file. Detailed rules live in `agent-team-protocol/`. Copy both `AGENTS.md` and `agent-team-protocol/` into any target repository root to make Codex follow the same team roles, gates, artifact handoff, loop rules, and release checks while you chat normally.
 
 See [INSTALL.md](INSTALL.md) for copy/install instructions.
+
+## Use Cases
+
+Agent Team is best suited for personal development and small-team software work where you want AI help without losing order, review quality, or release safety.
+
+Good fits:
+
+- personal projects and small-team repositories
+- MVPs, prototypes, small SaaS products, and web apps
+- adding features to an existing project
+- bug fixes and focused refactors
+- frontend UI/UX improvements
+- API, auth, permission, and privacy-related changes
+- release-readiness checks with QA, Code Review, and Security Review
+
+The ideal task size is a feature, fix, or refactor that can be completed in roughly 30 minutes to 2 days. Larger work should be split by Lead into smaller gated tasks.
+
+## Not A Runtime
+
+Agent Team is a Markdown rule system for Codex, not a custom agent runtime.
+
+It does not include:
+
+- a server
+- a database
+- a queue
+- vector memory
+- background workers
+- automatic multi-agent orchestration outside Codex
+
+Real runtime systems are useful when you want a productized agent platform, CI bot, long-running background jobs, persistent memory, logs, evals, or automatic task execution. This project is intentionally lighter: copy `AGENTS.md` and `agent-team-protocol/` into a project, then work with Codex normally.
 
 The design follows the roles and gates defined in this conversation:
 
