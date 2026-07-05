@@ -24,16 +24,17 @@ Before doing non-trivial work, read these files in order:
 8. `agent-team-protocol/07-review-checklists.md`
 9. `agent-team-protocol/08-engineering-boundaries.md`
 10. `agent-team-protocol/09-context-boundaries.md`
-11. `agent-team-protocol/roles/lead.md`
-12. `agent-team-protocol/roles/product-designer.md`
-13. `agent-team-protocol/roles/project-explorer.md`
-14. `agent-team-protocol/roles/architect.md`
-15. `agent-team-protocol/roles/frontend-engineer.md`
-16. `agent-team-protocol/roles/backend-engineer.md`
-17. `agent-team-protocol/roles/devops-engineer.md`
-18. `agent-team-protocol/roles/qa-engineer.md`
-19. `agent-team-protocol/roles/code-reviewer.md`
-20. `agent-team-protocol/roles/security-reviewer.md`
+11. `agent-team-protocol/10-native-subagents.md`
+12. `agent-team-protocol/roles/lead.md`
+13. `agent-team-protocol/roles/product-designer.md`
+14. `agent-team-protocol/roles/project-explorer.md`
+15. `agent-team-protocol/roles/architect.md`
+16. `agent-team-protocol/roles/frontend-engineer.md`
+17. `agent-team-protocol/roles/backend-engineer.md`
+18. `agent-team-protocol/roles/devops-engineer.md`
+19. `agent-team-protocol/roles/qa-engineer.md`
+20. `agent-team-protocol/roles/code-reviewer.md`
+21. `agent-team-protocol/roles/security-reviewer.md`
 
 For tiny, low-risk requests, read at minimum:
 
@@ -42,11 +43,14 @@ For tiny, low-risk requests, read at minimum:
 3. `agent-team-protocol/03-ask-user-policy.md`
 4. `agent-team-protocol/08-engineering-boundaries.md` when code will change
 5. `agent-team-protocol/09-context-boundaries.md`
-6. The role files relevant to the task
+6. `agent-team-protocol/10-native-subagents.md` when native subagents or parallel agents are requested
+7. The role files relevant to the task
 
 ## Operating Rule
 
 The user speaks to Lead. Lead routes the task through gated phases. Do not treat the roles as a free-form group chat.
+
+Default mode is simulated role separation inside the main Codex conversation. Native Codex subagents may be used only when the user explicitly asks for subagents, parallel agents, native Codex subagent mode, or gives a standing instruction for this repository.
 
 ## Mandatory User Permission
 

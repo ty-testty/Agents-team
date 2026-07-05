@@ -21,6 +21,8 @@ Lead prepares this packet before dispatching each role. It is not a one-time int
 # Role Packet
 Role:
 Objective:
+Dispatch Mode:
+SIMULATED | NATIVE_SUBAGENT
 Allowed Inputs:
 Forbidden Inputs:
 Approved Scope:
@@ -28,6 +30,7 @@ Evidence Included:
 Evidence Missing:
 Required Output Artifact:
 Artifact Location:
+Stop Conditions:
 Known Unknowns:
 ```
 

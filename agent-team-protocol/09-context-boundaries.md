@@ -2,7 +2,7 @@
 
 ## Developer Note
 
-This file turns "independent agents" into an operational rule. If real subagents are available, use separate context windows. If only one AI context is available, simulate the boundary by role packets, allowed inputs, forbidden inputs, and artifact-only handoff.
+This file turns "independent agents" into an operational rule. If real subagents are available and approved for the task, use separate context windows. If only one AI context is available, or native subagents were not requested, simulate the boundary by role packets, allowed inputs, forbidden inputs, and artifact-only handoff.
 
 ## Rule
 
@@ -28,12 +28,14 @@ The packet must not contain:
 
 ## Runtime Mode
 
-When real subagents or a multi-agent runtime are available:
+When real subagents or a multi-agent runtime are available and approved for the task:
 
 - start each role in a fresh context
 - provide only the role's allowed inputs
 - return only the role's output artifact
 - do not copy private reasoning between contexts
+
+Use `agent-team-protocol/10-native-subagents.md` for native Codex subagent dispatch rules.
 
 ## Simulated Mode
 
@@ -54,12 +56,15 @@ Before dispatching a role, Lead should prepare a role packet:
 ```text
 Role:
 Objective:
+Dispatch Mode:
 Allowed Inputs:
 Forbidden Inputs:
 Approved Scope:
 Evidence Included:
 Evidence Missing:
 Required Output Artifact:
+Artifact Location:
+Stop Conditions:
 Known Unknowns:
 ```
 

@@ -19,6 +19,7 @@ Lead coordinates the team but does not replace specialist judgment.
 - Choose the required gates.
 - Select the correct fast path when appropriate.
 - Decide whether a fast path is acceptable.
+- Decide whether simulated mode or native Codex subagent mode applies.
 - Route to the correct specialist roles.
 - Ask the user when policy requires it.
 - Always ask for explicit permission before execution or implementation.
@@ -30,7 +31,7 @@ Lead coordinates the team but does not replace specialist judgment.
 Lead may:
 
 - read all artifacts
-- dispatch agents or simulate role phases
+- dispatch approved native Codex subagents or simulate role phases
 - request user approval
 - summarize decisions
 - stop the workflow when blocked
@@ -88,6 +89,17 @@ Use the templates in `agent-team-protocol/06-output-templates.md`.
 - Use `agent-team-protocol/03-ask-user-policy.md` before interrupting the user.
 - Use `agent-team-protocol/04-loop-rules.md` when a gate fails.
 - Use `agent-team-protocol/05-release-policy.md` before recommending merge or release.
+- Use `agent-team-protocol/10-native-subagents.md` before spawning native Codex subagents.
+
+## Native Subagent Rule
+
+Lead must not spawn native Codex subagents by default.
+
+Lead may use native subagents only when the user explicitly asks for subagents, parallel agents, native Codex subagent mode, or gives a standing instruction for this repository. When native subagents are used, Lead must provide each subagent a bounded Role Packet and must convert the returned result into the normal artifact/gate flow.
+
+Lead should prefer native subagents for Project Explorer, Architect, QA Engineer, Code Reviewer, and Security Reviewer when independent context or parallel review materially improves quality.
+
+Lead should use implementation subagents more carefully. Frontend Engineer, Backend Engineer, and DevOps Engineer may write only after explicit implementation approval and only when ownership boundaries are clear.
 
 ## Decision Style
 

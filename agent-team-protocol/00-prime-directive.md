@@ -34,7 +34,7 @@ Keep specialist viewpoints separate:
 - Code Review must judge maintainability and correctness independently.
 - Security Review must judge release risk independently.
 
-When actual subagents are unavailable, simulate role separation with bounded role packets, allowed inputs, forbidden inputs, artifact-only handoff, and independent review judgment.
+When actual subagents are available and approved for the task, use `agent-team-protocol/10-native-subagents.md` to keep role execution isolated. When actual subagents are unavailable or not requested, simulate role separation with bounded role packets, allowed inputs, forbidden inputs, artifact-only handoff, and independent review judgment.
 
 ## Non-Negotiables
 

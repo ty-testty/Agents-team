@@ -47,6 +47,8 @@ It does not include:
 
 Real runtime systems are useful when you want a productized agent platform, CI bot, long-running background jobs, persistent memory, logs, evals, or automatic task execution. This project is intentionally lighter: copy `AGENTS.md` and `agent-team-protocol/` into a project, then work with Codex normally.
 
+This repository also includes a native Codex subagent adapter in `.codex/`. It is not a custom runtime. It maps the Markdown roles to Codex custom agent files so Codex can use real subagent threads when explicitly requested or enabled by a standing user instruction.
+
 The design follows the roles and gates defined in this conversation:
 
 - Lead
@@ -78,6 +80,8 @@ In practical terms:
 When a real multi-agent runtime is available, each role should run in its own context window.
 
 When only one Codex conversation is available, the protocol simulates sub-agent separation through `agent-team-protocol/09-context-boundaries.md`. Lead packages the allowed inputs for each role, and each role must ignore forbidden inputs such as another role's private reasoning, unrelated transcript history, or unapproved scope changes.
+
+When native Codex subagents are requested, the protocol uses `agent-team-protocol/10-native-subagents.md` and `.codex/agents/*.toml` to dispatch roles into real Codex subagent threads. Lead still owns routing, approval, gates, loops, and final release status.
 
 The team also uses Agent Team-style coordination, but only through controlled artifacts, gates, and loops:
 
@@ -113,6 +117,42 @@ The protocol keeps extra rigor lightweight. It does not require a full ceremony 
 
 These rules are meant to improve independence and evidence quality without turning every task into a heavy process.
 
+## Native Codex Subagent Mode
+
+Agent Team supports two execution modes:
+
+```text
+Simulated mode
+  One Codex conversation simulates role boundaries through Role Packets and artifacts.
+
+Native Codex subagent mode
+  Lead dispatches selected roles into separate Codex subagent threads and receives artifacts back.
+```
+
+Native mode uses:
+
+```text
+.codex/config.toml
+.codex/agents/*.toml
+agent-team-protocol/10-native-subagents.md
+```
+
+The native adapter includes custom agents for:
+
+- Product Designer
+- Project Explorer
+- Architect
+- Frontend Engineer
+- Backend Engineer
+- DevOps Engineer
+- QA Engineer
+- Code Reviewer
+- Security Reviewer
+
+Lead is not a native subagent by default. Lead remains the parent orchestrator.
+
+Native subagents are most useful for independent exploration, architecture checks, QA, code review, security review, and larger tasks where context pollution matters. Implementation subagents can write files, but only after explicit user approval and only when ownership boundaries are clear.
+
 ## Quick Start
 
 Copy these into the root of any project where you want Codex to follow this team protocol:
@@ -120,6 +160,7 @@ Copy these into the root of any project where you want Codex to follow this team
 ```text
 AGENTS.md
 agent-team-protocol/
+.codex/
 ```
 
 Then start a new Codex session from that project root and talk normally:
@@ -181,6 +222,9 @@ agent-team-protocol/examples/
 agent-team-protocol/artifacts/
   Optional temporary task artifacts. Ignored by git unless the user explicitly asks to preserve them.
 
+.codex/
+  Native Codex subagent adapter. Contains project-scoped custom agent files.
+
 INSTALL.md
   Copy/install instructions for another repository.
 ```
@@ -235,6 +279,7 @@ Same blocking failure repeated 2 consecutive times
 
 This protocol is influenced by public agent architecture and engineering workflow patterns from OpenAI, Anthropic, and agent-skills:
 
+- [OpenAI Codex Subagents Setup](https://developers.openai.com/codex/subagents)
 - [OpenAI Codex Subagents](https://developers.openai.com/codex/concepts/subagents)
 - [OpenAI Agents SDK Handoffs](https://openai.github.io/openai-agents-python/handoffs/)
 - [Anthropic Claude Code Subagents](https://code.claude.com/docs/en/sub-agents)

@@ -1,8 +1,10 @@
-# Install Agent Team Protocol In Another Repository
+# Install Agent Team In Another Repository
 
 ## Developer Note
 
-The installable unit is `AGENTS.md` plus `agent-team-protocol/`. Do not copy only `AGENTS.md`; it is just a loader and will intentionally stop Codex if the protocol directory is missing.
+The required installable unit is `AGENTS.md` plus `agent-team-protocol/`. Do not copy only `AGENTS.md`; it is just a loader and will intentionally stop Codex if the protocol directory is missing.
+
+The native Codex subagent adapter is `.codex/`. Copy it when you want project-scoped Codex custom agents in the target repository.
 
 Copy these into the target repository root:
 
@@ -32,6 +34,16 @@ cp -R agent-team-protocol /path/to/target-repo/agent-team-protocol
 
 Then start a new Codex session from the target repository root.
 
+## Native Subagent Install
+
+To add project-scoped Codex custom agents, also copy:
+
+```bash
+cp -R .codex /path/to/target-repo/.codex
+```
+
+Native subagents should be used only when explicitly requested by the user or enabled by a standing user instruction for that repository.
+
 ## Verify
 
 Ask Codex:
@@ -45,6 +57,8 @@ It should mention:
 - Lead as the user entry point
 - gated workflow
 - artifact handoff
+- simulated mode by default
+- native Codex subagents when explicitly requested or enabled by a standing user instruction
 - user approval before implementation
 - QA, Code Review, and Security release gates
 - Security Reviewer veto power

@@ -4,6 +4,11 @@ This document explains how the Agent Team protocol works.
 
 The user only talks to Lead. Lead routes work through gates. Specialist agents produce artifacts. Review agents inspect evidence independently. Release requires QA, Code Review, and Security Review.
 
+Agent Team supports two execution modes:
+
+- Simulated mode: one Codex conversation follows bounded role packets and artifact handoff.
+- Native Codex subagent mode: Lead dispatches selected roles to `.codex/agents/*.toml` subagent threads and receives artifacts back.
+
 ## System Architecture
 
 This diagram is intentionally square and layered. Solid arrows are the normal path. Dotted arrows are recovery paths.
@@ -92,6 +97,56 @@ flowchart LR
     J --> K["Final<br/>&quot;Lead&quot;"]
 ```
 
+## Native Subagent Layer
+
+Native subagents do not change the gate order. They change how a role phase is executed.
+
+```mermaid
+flowchart LR
+    U["User"] --> L["&quot;Lead&quot;<br/>parent orchestrator"]
+
+    subgraph Native["Native Codex Subagent Threads"]
+        PD["product_designer"]
+        PE["project_explorer"]
+        AR["architect"]
+        FE["frontend_engineer"]
+        BE["backend_engineer"]
+        DO["devops_engineer"]
+        QA["qa_engineer"]
+        CR["code_reviewer"]
+        SR["security_reviewer"]
+    end
+
+    L --> RP["Bounded Role Packet"]
+    RP --> PD
+    RP --> PE
+    RP --> AR
+    RP --> FE
+    RP --> BE
+    RP --> DO
+    RP --> QA
+    RP --> CR
+    RP --> SR
+
+    PD --> A["Artifacts"]
+    PE --> A
+    AR --> A
+    FE --> A
+    BE --> A
+    DO --> A
+    QA --> A
+    CR --> A
+    SR --> A
+
+    A --> L
+    L --> G["Gates + Loops + Final Status"]
+    G --> U
+```
+
+Lead is not a native subagent by default. Lead is the parent orchestrator.
+
+Native mode is strongest for independent exploration, architecture checks, QA, code review, and security review. Implementation subagents can write files only after explicit user approval and only when ownership boundaries are clear.
+
 ## Rejection And Recovery Loops
 
 User rejection is not always the end. Lead classifies the reason, sends the work back to the nearest responsible gate, then returns the corrected work to the matching approval or review gate.
@@ -142,6 +197,7 @@ flowchart LR
 - Every gate produces an artifact or a clearly stated equivalent.
 - Downstream agents consume artifacts, not private reasoning from upstream agents.
 - Reviewers do not rely on engineer private reasoning.
+- Native subagent output must return as artifacts before downstream gates consume it.
 - Any execution action requires explicit user permission first.
 - QA, Code Review, and Security Review are hard release gates.
 - Security Reviewer can veto release.
@@ -149,7 +205,8 @@ flowchart LR
 ## Why This Works
 
 ```text
-Subagent independent context = prevents minds from blending together
+Native subagent context = makes isolation harder and cleaner
+Simulated role packet = preserves isolation when native threads are unavailable
 Artifact handoff = prevents workflow from blending together
 Gate = prevents permission drift and skipped steps
 Loop rules = allow failure recovery without restarting everything
