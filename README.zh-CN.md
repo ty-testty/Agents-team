@@ -12,7 +12,7 @@
 - `agent-team-protocol/` 是 Codex 随后读取的详细协议。
 - `INSTALL.md` 说明如何把协议复制到另一个仓库。
 
-对于 Codex 风格的使用方式，本仓库包含 [AGENTS.md](AGENTS.md)，这是一个 AI 可读取的 loader 文件。详细规则位于 `agent-team-protocol/`。把 `AGENTS.md` 和 `agent-team-protocol/` 一起复制到任何目标仓库根目录后，你就可以正常和 Codex 对话，同时让 Codex 遵循相同的团队角色、gate、artifact handoff、loop rules 和 release checks。
+对于 Codex 风格的使用方式，本仓库包含 [AGENTS.md](AGENTS.md)，这是一个 AI 可读取的 loader 文件。详细规则位于 `agent-team-protocol/`，Codex custom agent definitions 位于 `.codex/`。把这三者一起复制到任何目标仓库根目录后，你就可以正常和 Codex 对话，同时让 Codex 遵循相同的团队角色、gate、artifact handoff、loop rules 和 release checks。
 
 复制/安装说明见 [INSTALL.md](INSTALL.md)。
 
@@ -45,9 +45,9 @@ Agent Team 是给 Codex 使用的 Markdown 规则系统，不是自定义 agent 
 - background workers
 - Codex 之外的自动 multi-agent orchestration
 
-真正的 runtime 系统适合产品化 agent platform、CI bot、长期后台任务、持久 memory、logs、evals 或自动任务执行。这个项目刻意更轻：把 `AGENTS.md` 和 `agent-team-protocol/` 复制到项目里，然后正常和 Codex 协作。
+真正的 runtime 系统适合产品化 agent platform、CI bot、长期后台任务、持久 memory、logs、evals 或自动任务执行。这个项目刻意更轻：把 `AGENTS.md`、`agent-team-protocol/` 和 `.codex/` 复制到项目里，然后正常和 Codex 协作。
 
-这个仓库也包含 `.codex/` 里的 native Codex subagent adapter。它不是自定义 runtime，而是把 Markdown roles 映射成 Codex custom agent files，让 Codex 在你明确要求或通过 standing user instruction 启用时，可以使用真实的 subagent threads。
+这个仓库也包含 `.codex/` 里的 Codex custom agent definitions。它不是自定义 runtime，而是同一套 Agent Team roles 的 Codex 原生执行入口。
 
 这个设计遵循本次对话中定义的角色和 gate：
 
@@ -77,11 +77,9 @@ Agent Team 是给 Codex 使用的 Markdown 规则系统，不是自定义 agent 
 - 每个 specialist 输出 artifact，而不是加入自由形式的群聊。
 - Review roles 独立判断 evidence，而不是相信 implementation reasoning。
 
-当真实 multi-agent runtime 可用时，每个 role 应该运行在自己的 context window 中。
+每个 role 都应该通过 Subagent Mode 运行。Lead 为每个 role 打包 allowed inputs，通过 `.codex/agents/*.toml` 分发 role，然后接收 artifact，并把 artifact 送入正常 gates 和 loops。
 
-当只有一个 Codex conversation 可用时，本协议通过 `agent-team-protocol/09-context-boundaries.md` 模拟 sub-agent 隔离。Lead 为每个 role 打包 allowed inputs，每个 role 必须忽略 forbidden inputs，例如另一个 role 的 private reasoning、无关 transcript history，或未批准的 scope changes。
-
-当你要求使用 native Codex subagents 时，本协议通过 `agent-team-protocol/10-native-subagents.md` 和 `.codex/agents/*.toml` 把 role 分发到真实的 Codex subagent threads。Lead 仍然负责 routing、approval、gates、loops 和最终 release status。
+如果 Codex subagent threads 不可用，Lead 必须报告 `SUBAGENT_UNAVAILABLE`，并询问用户是启用 subagents、接受本次任务 reduced independence，还是取消。Reduced-independence execution 是明确 waiver，不是正常 Subagent Mode。
 
 团队也使用 Agent Team 风格的协作，但只通过受控的 artifacts、gates 和 loops：
 
@@ -117,27 +115,27 @@ Lead orchestrator
 
 这些规则的目的，是在不把每个任务变成重流程的前提下，提高独立性和 evidence quality。
 
-## Native Codex Subagent Mode
+## Subagent Mode
 
-Agent Team 支持两种执行模式：
+Agent Team 使用一种执行模型：
 
 ```text
-Simulated mode
-  一个 Codex conversation 通过 Role Packets 和 artifacts 模拟 role boundaries。
-
-Native Codex subagent mode
-  Lead 把选定 roles 分发到独立的 Codex subagent threads，并接收 artifacts。
+Subagent Mode
+  Lead 用 bounded Role Packet 分发每个 role。
+  该 role 作为 specialist subagent 运行。
+  每个 role 返回 artifact。
+  Gates 和 loops 消费 artifacts，而不是 private reasoning。
 ```
 
-Native mode 使用：
+Codex subagents 使用：
 
 ```text
 .codex/config.toml
 .codex/agents/*.toml
-agent-team-protocol/10-native-subagents.md
+agent-team-protocol/10-subagents.md
 ```
 
-native adapter 包含这些 custom agents：
+Codex subagent adapter 包含这些 custom agents：
 
 - Product Designer
 - Project Explorer
@@ -149,9 +147,13 @@ native adapter 包含这些 custom agents：
 - Code Reviewer
 - Security Reviewer
 
-Lead 默认不是 native subagent。Lead 仍然是 parent orchestrator。
+Lead 不是 subagent。Lead 仍然是 parent orchestrator。
 
-Native subagents 最适合独立探索、架构检查、QA、code review、security review，以及那些 context pollution 会影响质量的较大任务。Implementation subagents 可以写文件，但必须先有明确 user approval，并且 ownership boundaries 必须清楚。
+Subagents 最适合独立探索、架构检查、QA、code review、security review，以及那些 context pollution 会影响质量的较大任务。Implementation subagents 可以写文件，但必须先有明确 user approval，并且 ownership boundaries 必须清楚。
+
+只有 Lead 可以 dispatch subagents。Subagents 之间不能互相调用。
+
+Implementation freeze 之后，QA Engineer、Code Reviewer 和 Security Reviewer 可以基于同一份 frozen implementation artifact 并行运行。Lead 负责合并它们的报告进入 final release summary，但不能重做或覆盖 specialist judgment。
 
 ## Quick Start
 
@@ -223,7 +225,7 @@ agent-team-protocol/artifacts/
   可选的临时任务 artifacts。默认被 git 忽略，除非用户明确要求保留。
 
 .codex/
-  Native Codex subagent adapter。包含 project-scoped custom agent files。
+  Codex custom agent definitions。包含 project-scoped subagent files。
 
 INSTALL.md
   复制/安装到另一个仓库的说明。

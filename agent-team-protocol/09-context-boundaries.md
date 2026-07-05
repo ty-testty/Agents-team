@@ -2,7 +2,7 @@
 
 ## Developer Note
 
-This file turns "independent agents" into an operational rule. If real subagents are available and approved for the task, use separate context windows. If only one AI context is available, or native subagents were not requested, simulate the boundary by role packets, allowed inputs, forbidden inputs, and artifact-only handoff.
+This file turns subagent independence into an operational rule. Every role works from a bounded Role Packet, returns an artifact, and avoids private reasoning from other roles. Subagent work should run in separate Codex subagent context windows.
 
 ## Rule
 
@@ -26,26 +26,23 @@ The packet must not contain:
 - unapproved scope changes
 - unverifiable claims used as evidence
 
-## Runtime Mode
+## Subagent Execution
 
-When real subagents or a multi-agent runtime are available and approved for the task:
+For non-trivial role work:
 
 - start each role in a fresh context
 - provide only the role's allowed inputs
 - return only the role's output artifact
 - do not copy private reasoning between contexts
 
-Use `agent-team-protocol/10-native-subagents.md` for native Codex subagent dispatch rules.
+Use `agent-team-protocol/10-subagents.md` for subagent dispatch rules.
 
-## Simulated Mode
+If Codex subagent threads are unavailable:
 
-When only one AI context is available:
-
-- announce the active role phase
-- read only the allowed inputs for that role
-- ignore forbidden inputs even if they exist in the transcript
-- produce the role's artifact before moving to the next role
-- do not let implementation self-justification influence QA, Code Review, or Security Review
+- Lead must mark the workflow `SUBAGENT_UNAVAILABLE`
+- Lead must not silently continue as if independence is preserved
+- Lead must ask the user whether to enable subagents, continue with reduced independence, or cancel
+- if the user explicitly accepts reduced independence, Lead must disclose that QA, Code Review, and Security are no longer fully independent for that run
 
 If a role cannot avoid contaminated context, Lead must either summarize a sanitized artifact packet or ask the user whether to continue with reduced independence.
 
@@ -56,7 +53,6 @@ Before dispatching a role, Lead should prepare a role packet:
 ```text
 Role:
 Objective:
-Dispatch Mode:
 Allowed Inputs:
 Forbidden Inputs:
 Approved Scope:

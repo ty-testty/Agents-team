@@ -115,21 +115,23 @@ Artifacts:
 - `06c-devops-implementation.md`
 - `06-implementation-summary.md`
 
+Lead must freeze the implementation artifact before release review starts. If implementation changes after review begins, affected review artifacts become stale and the relevant reviewers must rerun.
+
 ## 7. QA Gate
 
-QA Engineer verifies function and experience using available commands and evidence.
+QA Engineer verifies function and experience using available commands and evidence. After implementation freeze, QA may run in parallel with Code Review and Security Review.
 
 Artifact: `07-qa-report.md`
 
 ## 8. Code Review Gate
 
-Code Reviewer independently reviews code quality and maintainability.
+Code Reviewer independently reviews code quality and maintainability. After implementation freeze, Code Review may run in parallel with QA and Security Review.
 
 Artifact: `08-code-review.md`
 
 ## 9. Security Gate
 
-Security Reviewer independently decides release security.
+Security Reviewer independently decides release security. After implementation freeze, Security Review may run in parallel with QA and Code Review, but release status must wait for all required review artifacts.
 
 Artifact: `09-security-review.md`
 

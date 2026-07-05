@@ -4,10 +4,7 @@ This document explains how the Agent Team protocol works.
 
 The user only talks to Lead. Lead routes work through gates. Specialist agents produce artifacts. Review agents inspect evidence independently. Release requires QA, Code Review, and Security Review.
 
-Agent Team supports two execution modes:
-
-- Simulated mode: one Codex conversation follows bounded role packets and artifact handoff.
-- Native Codex subagent mode: Lead dispatches selected roles to `.codex/agents/*.toml` subagent threads and receives artifacts back.
+Agent Team uses one Subagent Mode. Lead dispatches selected roles through bounded Role Packets and Codex custom agents in `.codex/agents/*.toml`. Each role returns artifacts to Lead. If subagent threads are unavailable, Lead must report `SUBAGENT_UNAVAILABLE` instead of silently merging roles into one shared context.
 
 ## System Architecture
 
@@ -91,21 +88,25 @@ flowchart LR
     D --> E["Release Feasibility<br/>&quot;DevOps Engineer&quot;"]
     E --> F["User Approval<br/>&quot;Lead&quot;"]
     F --> G["Implementation<br/>&quot;Frontend Engineer&quot; / &quot;Backend Engineer&quot; / &quot;DevOps Engineer&quot;"]
-    G --> H["QA Gate<br/>&quot;QA Engineer&quot;"]
-    H --> I["Code Review<br/>&quot;Code Reviewer&quot;"]
-    I --> J["Security Gate<br/>&quot;Security Reviewer&quot;"]
-    J --> K["Final<br/>&quot;Lead&quot;"]
+    G --> Z["Implementation Freeze"]
+    Z --> H["QA Gate<br/>&quot;QA Engineer&quot;"]
+    Z --> I["Code Review<br/>&quot;Code Reviewer&quot;"]
+    Z --> J["Security Gate<br/>&quot;Security Reviewer&quot;"]
+    H --> M["Lead Review Merge"]
+    I --> M
+    J --> M
+    M --> K["Final<br/>&quot;Lead&quot;"]
 ```
 
-## Native Subagent Layer
+## Subagent Layer
 
-Native subagents do not change the gate order. They change how a role phase is executed.
+Subagents do not change the gate order. They change how a role phase is executed.
 
 ```mermaid
 flowchart LR
     U["User"] --> L["&quot;Lead&quot;<br/>parent orchestrator"]
 
-    subgraph Native["Native Codex Subagent Threads"]
+    subgraph Subagents["Subagents"]
         PD["product_designer"]
         PE["project_explorer"]
         AR["architect"]
@@ -143,9 +144,13 @@ flowchart LR
     G --> U
 ```
 
-Lead is not a native subagent by default. Lead is the parent orchestrator.
+Lead is not a subagent. Lead is the parent orchestrator.
 
-Native mode is strongest for independent exploration, architecture checks, QA, code review, and security review. Implementation subagents can write files only after explicit user approval and only when ownership boundaries are clear.
+Subagent Mode is strongest for independent exploration, architecture checks, QA, code review, and security review. Implementation subagents can write files only after explicit user approval and only when ownership boundaries are clear.
+
+If subagent execution is unavailable, the workflow is blocked until the user enables subagents or explicitly waives subagent independence for that task.
+
+Only Lead may dispatch subagents. After implementation freeze, Lead may fan out QA, Code Review, and Security Review in parallel. Lead then merges the returned artifacts, but does not redo or override specialist judgment.
 
 ## Rejection And Recovery Loops
 
@@ -197,7 +202,7 @@ flowchart LR
 - Every gate produces an artifact or a clearly stated equivalent.
 - Downstream agents consume artifacts, not private reasoning from upstream agents.
 - Reviewers do not rely on engineer private reasoning.
-- Native subagent output must return as artifacts before downstream gates consume it.
+- Subagent output must return as artifacts before downstream gates consume it.
 - Any execution action requires explicit user permission first.
 - QA, Code Review, and Security Review are hard release gates.
 - Security Reviewer can veto release.
@@ -205,8 +210,8 @@ flowchart LR
 ## Why This Works
 
 ```text
-Native subagent context = makes isolation harder and cleaner
-Simulated role packet = preserves isolation when native threads are unavailable
+Subagent context = prevents minds from blending together
+Role Packet = keeps each subagent bounded to allowed inputs
 Artifact handoff = prevents workflow from blending together
 Gate = prevents permission drift and skipped steps
 Loop rules = allow failure recovery without restarting everything

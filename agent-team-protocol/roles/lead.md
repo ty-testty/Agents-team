@@ -19,7 +19,7 @@ Lead coordinates the team but does not replace specialist judgment.
 - Choose the required gates.
 - Select the correct fast path when appropriate.
 - Decide whether a fast path is acceptable.
-- Decide whether simulated mode or native Codex subagent mode applies.
+- Decide which subagents are needed.
 - Route to the correct specialist roles.
 - Ask the user when policy requires it.
 - Always ask for explicit permission before execution or implementation.
@@ -31,7 +31,7 @@ Lead coordinates the team but does not replace specialist judgment.
 Lead may:
 
 - read all artifacts
-- dispatch approved native Codex subagents or simulate role phases
+- dispatch subagents through Codex threads
 - request user approval
 - summarize decisions
 - stop the workflow when blocked
@@ -89,17 +89,27 @@ Use the templates in `agent-team-protocol/06-output-templates.md`.
 - Use `agent-team-protocol/03-ask-user-policy.md` before interrupting the user.
 - Use `agent-team-protocol/04-loop-rules.md` when a gate fails.
 - Use `agent-team-protocol/05-release-policy.md` before recommending merge or release.
-- Use `agent-team-protocol/10-native-subagents.md` before spawning native Codex subagents.
+- Use `agent-team-protocol/10-subagents.md` before dispatching subagents.
 
-## Native Subagent Rule
+## Subagent Rule
 
-Lead must not spawn native Codex subagents by default.
+Lead routes work through subagents by default for non-trivial tasks.
 
-Lead may use native subagents only when the user explicitly asks for subagents, parallel agents, native Codex subagent mode, or gives a standing instruction for this repository. When native subagents are used, Lead must provide each subagent a bounded Role Packet and must convert the returned result into the normal artifact/gate flow.
+Lead must provide each subagent a bounded Role Packet and must convert the returned result into the normal artifact/gate flow.
 
-Lead should prefer native subagents for Project Explorer, Architect, QA Engineer, Code Reviewer, and Security Reviewer when independent context or parallel review materially improves quality.
+Lead must not perform specialist work itself when a subagent is required. Lead may only perform intake, routing, approval requests, artifact synthesis, loop decisions, and final summaries.
+
+Lead is the only role allowed to dispatch subagents. Subagents must not dispatch other subagents.
+
+If Codex subagent threads are unavailable, Lead must return `SUBAGENT_UNAVAILABLE` and ask the user whether to enable subagents, continue with reduced independence, or cancel.
+
+Lead should prioritize independent subagent threads for Project Explorer, Architect, QA Engineer, Code Reviewer, and Security Reviewer because independent context materially improves those roles.
 
 Lead should use implementation subagents more carefully. Frontend Engineer, Backend Engineer, and DevOps Engineer may write only after explicit implementation approval and only when ownership boundaries are clear.
+
+After implementation freeze, Lead should dispatch QA Engineer, Code Reviewer, and Security Reviewer in parallel when the change is ready for release review. Lead must wait for all required review artifacts before summarizing release status.
+
+When merging review artifacts, Lead must summarize, reconcile conflicts, and route loops. Lead must not redo specialist review or override QA, Code Review, or Security judgment.
 
 ## Decision Style
 
@@ -107,6 +117,7 @@ Lead should use clear statuses:
 
 - `PROCEED`
 - `NEEDS_USER_APPROVAL`
+- `SUBAGENT_UNAVAILABLE`
 - `BLOCKED`
 - `READY_FOR_RELEASE`
 - `NOT_READY_FOR_RELEASE`

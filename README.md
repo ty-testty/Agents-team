@@ -12,7 +12,7 @@ When maintaining this repo, keep this distinction clear:
 - `agent-team-protocol/` is the detailed protocol Codex reads next.
 - `INSTALL.md` explains how to copy the protocol into another repo.
 
-For Codex-style usage, this repository includes [AGENTS.md](AGENTS.md), an AI-readable loader file. Detailed rules live in `agent-team-protocol/`. Copy both `AGENTS.md` and `agent-team-protocol/` into any target repository root to make Codex follow the same team roles, gates, artifact handoff, loop rules, and release checks while you chat normally.
+For Codex-style usage, this repository includes [AGENTS.md](AGENTS.md), an AI-readable loader file. Detailed rules live in `agent-team-protocol/`, and Codex custom agent definitions live in `.codex/`. Copy all three into any target repository root to make Codex follow the same team roles, gates, artifact handoff, loop rules, and release checks while you chat normally.
 
 See [INSTALL.md](INSTALL.md) for copy/install instructions.
 
@@ -45,9 +45,9 @@ It does not include:
 - background workers
 - automatic multi-agent orchestration outside Codex
 
-Real runtime systems are useful when you want a productized agent platform, CI bot, long-running background jobs, persistent memory, logs, evals, or automatic task execution. This project is intentionally lighter: copy `AGENTS.md` and `agent-team-protocol/` into a project, then work with Codex normally.
+Real runtime systems are useful when you want a productized agent platform, CI bot, long-running background jobs, persistent memory, logs, evals, or automatic task execution. This project is intentionally lighter: copy `AGENTS.md`, `agent-team-protocol/`, and `.codex/` into a project, then work with Codex normally.
 
-This repository also includes a native Codex subagent adapter in `.codex/`. It is not a custom runtime. It maps the Markdown roles to Codex custom agent files so Codex can use real subagent threads when explicitly requested or enabled by a standing user instruction.
+This repository also includes Codex custom agent definitions in `.codex/`. They are not a custom runtime. They are the Codex subagent execution surface for the same Agent Team roles.
 
 The design follows the roles and gates defined in this conversation:
 
@@ -77,11 +77,9 @@ In practical terms:
 - Each specialist returns an artifact instead of joining a free-form group chat.
 - Review roles judge evidence independently instead of trusting implementation reasoning.
 
-When a real multi-agent runtime is available, each role should run in its own context window.
+Each role should run through Subagent Mode. Lead packages the allowed inputs for each role, dispatches the role through `.codex/agents/*.toml`, receives an artifact back, and routes that artifact through the normal gates and loops.
 
-When only one Codex conversation is available, the protocol simulates sub-agent separation through `agent-team-protocol/09-context-boundaries.md`. Lead packages the allowed inputs for each role, and each role must ignore forbidden inputs such as another role's private reasoning, unrelated transcript history, or unapproved scope changes.
-
-When native Codex subagents are requested, the protocol uses `agent-team-protocol/10-native-subagents.md` and `.codex/agents/*.toml` to dispatch roles into real Codex subagent threads. Lead still owns routing, approval, gates, loops, and final release status.
+If Codex subagent threads are unavailable, Lead must report `SUBAGENT_UNAVAILABLE` and ask the user whether to enable subagents, continue with reduced independence for this task, or cancel. Reduced-independence execution is an explicit waiver, not normal Subagent Mode.
 
 The team also uses Agent Team-style coordination, but only through controlled artifacts, gates, and loops:
 
@@ -117,27 +115,27 @@ The protocol keeps extra rigor lightweight. It does not require a full ceremony 
 
 These rules are meant to improve independence and evidence quality without turning every task into a heavy process.
 
-## Native Codex Subagent Mode
+## Subagent Mode
 
-Agent Team supports two execution modes:
+Agent Team uses one execution model:
 
 ```text
-Simulated mode
-  One Codex conversation simulates role boundaries through Role Packets and artifacts.
-
-Native Codex subagent mode
-  Lead dispatches selected roles into separate Codex subagent threads and receives artifacts back.
+Subagent Mode
+  Lead dispatches each role with a bounded Role Packet.
+  The role runs as a specialist subagent.
+  Each role returns an artifact.
+  Gates and loops consume artifacts, not private reasoning.
 ```
 
-Native mode uses:
+Codex subagents use:
 
 ```text
 .codex/config.toml
 .codex/agents/*.toml
-agent-team-protocol/10-native-subagents.md
+agent-team-protocol/10-subagents.md
 ```
 
-The native adapter includes custom agents for:
+The Codex subagent adapter includes custom agents for:
 
 - Product Designer
 - Project Explorer
@@ -149,9 +147,13 @@ The native adapter includes custom agents for:
 - Code Reviewer
 - Security Reviewer
 
-Lead is not a native subagent by default. Lead remains the parent orchestrator.
+Lead is not a subagent. Lead remains the parent orchestrator.
 
-Native subagents are most useful for independent exploration, architecture checks, QA, code review, security review, and larger tasks where context pollution matters. Implementation subagents can write files, but only after explicit user approval and only when ownership boundaries are clear.
+Subagents are most useful for independent exploration, architecture checks, QA, code review, security review, and larger tasks where context pollution matters. Implementation subagents can write files, but only after explicit user approval and only when ownership boundaries are clear.
+
+Only Lead dispatches subagents. Subagents do not call each other.
+
+After implementation freeze, QA Engineer, Code Reviewer, and Security Reviewer can run in parallel against the same frozen implementation artifact. Lead merges their reports into the final release summary, but does not redo or override their specialist judgment.
 
 ## Quick Start
 
@@ -223,7 +225,7 @@ agent-team-protocol/artifacts/
   Optional temporary task artifacts. Ignored by git unless the user explicitly asks to preserve them.
 
 .codex/
-  Native Codex subagent adapter. Contains project-scoped custom agent files.
+  Codex custom agent definitions. Contains project-scoped subagent files.
 
 INSTALL.md
   Copy/install instructions for another repository.

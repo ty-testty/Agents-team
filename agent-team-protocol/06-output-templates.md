@@ -21,8 +21,6 @@ Lead prepares this packet before dispatching each role. It is not a one-time int
 # Role Packet
 Role:
 Objective:
-Dispatch Mode:
-SIMULATED | NATIVE_SUBAGENT
 Allowed Inputs:
 Forbidden Inputs:
 Approved Scope:
@@ -54,7 +52,7 @@ Yes | No
 ## Initial Questions
 
 ## Decision
-PROCEED | NEEDS_USER_INPUT | BLOCKED
+PROCEED | NEEDS_USER_INPUT | SUBAGENT_UNAVAILABLE | BLOCKED
 ```
 
 ## 01 Product Brief
@@ -219,6 +217,10 @@ IMPLEMENTED | NOT_APPLICABLE | BLOCKED
 
 ## Handoffs
 
+## Implementation Freeze
+Frozen Diff Or Artifact:
+Review Fan-out Ready: Yes | No
+
 ## Risks
 ```
 
@@ -318,6 +320,13 @@ Use `Reviewed`, `Not relevant`, or `Not checked` for important areas.
 ## Code Review Decision
 
 ## Security Decision
+
+## Review Merge
+QA Artifact:
+Code Review Artifact:
+Security Artifact:
+Stale Review Artifacts:
+Conflicts:
 
 ## Remaining Risks
 

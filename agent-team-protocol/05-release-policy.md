@@ -11,6 +11,9 @@ Release readiness is decided by evidence, not optimism.
 - No release recommendation without QA evidence.
 - No release recommendation without Code Review.
 - No release recommendation without Security Review.
+- QA, Code Review, and Security Review may run in parallel after implementation freeze.
+- Release status must wait for all required review artifacts.
+- If implementation changes after review starts, affected review artifacts are stale and must rerun.
 - Security `RELEASE_BLOCKED` blocks release.
 - `RELEASE_OK_WITH_RISK_ACCEPTANCE` requires explicit user acceptance.
 - If tests cannot be run, say so in the final summary.
@@ -30,6 +33,8 @@ Lead final response should include:
 - Security decision
 - remaining risks
 - whether merge/release is recommended
+
+Lead may merge review artifacts into one final summary, but Lead must not redo, replace, or override specialist review judgment.
 
 ## Security Decisions
 

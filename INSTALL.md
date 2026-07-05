@@ -2,18 +2,17 @@
 
 ## Developer Note
 
-The required installable unit is `AGENTS.md` plus `agent-team-protocol/`. Do not copy only `AGENTS.md`; it is just a loader and will intentionally stop Codex if the protocol directory is missing.
-
-The native Codex subagent adapter is `.codex/`. Copy it when you want project-scoped Codex custom agents in the target repository.
+The installable unit is `AGENTS.md`, `agent-team-protocol/`, and `.codex/`. Do not copy only `AGENTS.md`; it is just a loader and will intentionally stop Codex if the protocol directory is missing.
 
 Copy these into the target repository root:
 
 ```text
 AGENTS.md
 agent-team-protocol/
+.codex/
 ```
 
-`AGENTS.md` is the Codex loader. `agent-team-protocol/` contains the detailed rules.
+`AGENTS.md` is the Codex loader. `agent-team-protocol/` contains the detailed rules. `.codex/` contains Codex custom agent definitions for Subagent Mode.
 
 Task artifacts, when written as files, should go under:
 
@@ -23,26 +22,17 @@ agent-team-protocol/artifacts/<task-id>/
 
 That directory is temporary by default and should be ignored unless the user explicitly asks to preserve artifacts.
 
-## Minimal Install
+## Install
 
 From this repository:
 
 ```bash
 cp AGENTS.md /path/to/target-repo/AGENTS.md
 cp -R agent-team-protocol /path/to/target-repo/agent-team-protocol
-```
-
-Then start a new Codex session from the target repository root.
-
-## Native Subagent Install
-
-To add project-scoped Codex custom agents, also copy:
-
-```bash
 cp -R .codex /path/to/target-repo/.codex
 ```
 
-Native subagents should be used only when explicitly requested by the user or enabled by a standing user instruction for that repository.
+Then start a new Codex session from the target repository root.
 
 ## Verify
 
@@ -57,8 +47,8 @@ It should mention:
 - Lead as the user entry point
 - gated workflow
 - artifact handoff
-- simulated mode by default
-- native Codex subagents when explicitly requested or enabled by a standing user instruction
+- Subagent Mode
+- Codex custom agents under `.codex/agents/`
 - user approval before implementation
 - QA, Code Review, and Security release gates
 - Security Reviewer veto power
