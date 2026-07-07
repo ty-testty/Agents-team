@@ -1,20 +1,42 @@
 # Agent Team
 
-Codex を、任意のリポジトリ内で gate 付きの AI ソフトウェア開発チームのように動かすための、移植可能な Markdown agent team です。
+Agent Team は、任意のリポジトリ内で Codex を規律あるソフトウェア開発チームのように動かすための、移植可能な Markdown protocol です。
 
-## Developer Note
+あなたは通常どおり Codex と会話します。違いは、Codex がチーム workflow に従うことです：まず計画し、実装前に確認し、承認された scope 内で変更し、QA、Code Review、Security Review を通ってから release を推奨します。
 
-このプロジェクトには、意図的にカスタム runtime を含めていません。runtime は Codex そのものです。`AGENTS.md` が Codex に読むべき内容を伝え、`agent-team-protocol/` が永続的なチームルールを保持します。
+## What This Is
 
-このリポジトリを保守するときは、次の区別を明確にしてください：
+このリポジトリは、Codex に再利用可能なチーム運用マニュアルを与えます。
 
-- `AGENTS.md` は Codex が最初に読む小さな loader です。
-- `agent-team-protocol/` は Codex が次に読む詳細な protocol です。
-- `INSTALL.md` は、この protocol を別のリポジトリへコピーする方法を説明します。
+平たく言うと：
 
-Codex 風の使い方のために、このリポジトリには AI が読める loader ファイルである [AGENTS.md](AGENTS.md) が含まれています。詳細ルールは `agent-team-protocol/` にあり、Codex custom agent definitions は `.codex/` にあります。この 3 つを対象リポジトリの root にコピーすると、通常どおり Codex と会話しながら、同じ team roles、gates、artifact handoff、loop rules、release checks に従わせることができます。
+1. あなたは `Lead` とだけ話します。
+2. `Lead` は specialist subagents に bounded task packets を作ります。
+3. Specialist subagents は structured artifacts を返します。
+4. QA、Code Review、Security が evidence を独立して確認します。
+5. `Lead` が結果をまとめ、release を推奨できるかを伝えます。
 
-コピー/インストール手順は [INSTALL.md](INSTALL.md) を参照してください。
+これは自由チャット型の agent swarm ではありません。Roles は気軽に会話せず、artifacts で作業を handoff します。
+
+```text
+User
+ -> Lead
+ -> specialist subagents
+ -> artifacts
+ -> gates and recovery loops
+ -> final release decision
+```
+
+## Key Terms
+
+- `Lead`：あなたが直接話す唯一の role。Lead は作業を route し、approval を求め、artifacts を検証し、最終状態をまとめます。
+- `Subagent`：独立した context で動く専門 role。例：Architect、QA Engineer、Security Reviewer。
+- `Gate`：workflow の checkpoint。次へ進む前に artifact または明確な decision が必要です。
+- `Artifact`：構造化された handoff 結果。decisions、evidence、missing evidence、blockers、next action を記録します。
+- `Role Packet`：Lead が subagent に渡す bounded task packet。objective、allowed inputs、forbidden inputs、evidence、expected output を含みます。
+- `Implementation Freeze`：実装後の freeze point。QA、Code Review、Security が同じ diff または implementation artifact を確認します。
+- `Security Veto`：Security Reviewer は `RELEASE_BLOCKED` で release を止められます。Lead はそれを上書きできません。
+- `Runtime`：agents を自動実行する本物の server/platform。このプロジェクトはそれではありません。ここでの runtime は Codex そのものです。
 
 ## Use Cases
 
@@ -32,136 +54,71 @@ Agent Team は、AI の支援を受けながらも順序、review quality、rele
 
 理想的なタスクサイズは、およそ 30 分から 2 日で完了できる feature、fix、refactor です。より大きな作業は、Lead が小さな gated tasks に分割します。
 
-## Not A Runtime
+## Workflow
 
-Agent Team は Codex のための Markdown ルールシステムであり、カスタム agent runtime ではありません。
-
-含まれていないもの：
-
-- server
-- database
-- queue
-- vector memory
-- background workers
-- Codex 外での automatic multi-agent orchestration
-
-本物の runtime system は、productized agent platform、CI bot、long-running background jobs、persistent memory、logs、evals、自動 task execution が必要な場合に有用です。このプロジェクトは意図的に軽量です：`AGENTS.md`、`agent-team-protocol/`、`.codex/` をプロジェクトにコピーし、通常どおり Codex と作業します。
-
-このリポジトリには、`.codex/` に Codex custom agent definitions も含まれています。これはカスタム runtime ではありません。同じ Agent Team roles の Codex subagent execution surface です。
-
-この設計は、この会話で定義した roles と gates に基づいています：
-
-- Lead
-- Product Designer
-- Project Explorer
-- Architect
-- Frontend Engineer
-- Backend Engineer
-- DevOps Engineer
-- QA Engineer
-- Code Reviewer
-- Security Reviewer
-
-重要な考え方は artifact handoff です。Agents は自由にチャットしません。各 gate が構造化された artifact を書き、次の gate は必要な artifact だけを読みます。
-
-## Engineering Model
-
-この protocol は、workflow gates と組み合わせた sub-agent orchestration model を使います。
-
-実際には次のように動きます：
-
-- ユーザーは Lead とだけ話します。
-- Lead は orchestrator として動きます。
-- 各 role は specialist sub-agent のように動きます。
-- 各 specialist は、許可された入力だけを受け取ります。
-- 各 specialist は、自由形式のグループチャットに参加するのではなく artifact を返します。
-- Review roles は implementation reasoning を信じるのではなく、evidence を独立して判断します。
-
-各 role は Subagent Mode で実行されます。Lead は各 role に allowed inputs をパッケージし、`.codex/agents/*.toml` を通じて role を dispatch し、artifact を受け取り、その artifact を通常の gates と loops に流します。
-
-Codex subagent threads が利用できない場合、Lead は `SUBAGENT_UNAVAILABLE` を報告し、subagents を有効化するか、このタスクだけ reduced independence で続行するか、キャンセルするかをユーザーに確認しなければなりません。Reduced-independence execution は明示的な waiver であり、通常の Subagent Mode ではありません。
-
-このチームは Agent Team 風の協調も使いますが、制御された artifacts、gates、loops を通してのみ行います：
-
-- artifacts は decisions と evidence を保存します
-- gates は作業のスキップを防ぎます
-- loops は失敗した作業を最も近い responsible role に戻します
-- QA、Code Review、Security は独立した release checks のままです
-
-結果として、これは自由チャット型の agent swarm ではありません。より近いのは次の形です：
+通常のソフトウェア作業では、default flow は次の通りです：
 
 ```text
-Lead orchestrator
- -> isolated specialist sub-agents
- -> artifact handoff
- -> gated review
- -> repair loops
- -> final release decision
+Lead
+ -> Product Designer
+ -> Project Explorer
+ -> Architect
+ -> DevOps Engineer, early read-only release feasibility
+ -> User Approval
+ -> Frontend Engineer / Backend Engineer / DevOps Engineer
+ -> Implementation Freeze
+ -> QA Engineer / Code Reviewer / Security Reviewer
+ -> Lead Final
 ```
 
-## Quality Rules
+重要なルール：
 
-この protocol は、追加の厳密さを軽量に保ちます。小さなタスクすべてに重い ceremony を要求するわけではありませんが、失敗コストが高い場所ではより強い checks を追加します：
+- Implementation は、あなたが明示的に承認するまで block されます。
+- Fast path は planning を短くできますが、user approval は skip できません。
+- QA、Code Review、Security は Implementation Freeze 後に parallel 実行できます。
+- Release status は、すべての required review artifacts を待つ必要があります。
+- Security Reviewer は hard release gate であり、release を veto できます。
 
-- Lead は各 role に対して、allowed inputs、evidence included、evidence missing、expected output をパッケージします。
-- Role Packet と返却された artifact は validity checks を通過しない限り、Lead は dispatch したり gate を passed と扱ったりできません。
-- Context budget は重複 context を減らしますが、gates、reviewer independence、approval、release checks は減らしません。
-- Architect は repository facts、verified external facts、assumptions、recommendations を分けます。
-- Architect は verified external facts について、source URL、date checked、confidence、supported decision を記録します。
-- Engineers は小さな implementation slices で作業し、checks と rollback notes を残します。
-- UI が関係し、tools が利用できる場合、QA は browser behavior、console errors、core interactions を確認します。
-- Code Reviewer は最もリスクの高い correctness claim に対して短い doubt check を使います。
-- Security Reviewer は重要領域を `Reviewed`、`Not relevant`、`Not checked` として記録します。
-- must-ask 条件に該当する場合、fast path は禁止されます。
-- 同じ blocking failure が 2 回連続で未解決の場合、loop を停止します。
+## Roles
 
-これらのルールは、すべてのタスクを重いプロセスにせず、独立性と evidence quality を高めるためのものです。
+- `Product Designer`：user goal、scope、acceptance criteria、UX flow、UI states を定義します。
+- `Project Explorer`：リポジトリを読み、facts、existing patterns、commands、dependencies、constraints を報告します。
+- `Architect`：technical plan、contracts、tradeoffs、test strategy、rollback plan を作成し、必要に応じて current external facts を検証します。
+- `Frontend Engineer`：承認された UI、client behavior、styling、frontend tests を実装します。
+- `Backend Engineer`：承認された APIs、server logic、data handling、permissions、backend tests を実装します。
+- `DevOps Engineer`：早期に release/runtime feasibility を確認します。CI/CD、deployment、env、runtime changes の実装は approval 後のみです。
+- `QA Engineer`：evidence に基づいて behavior と UX を検証します。QA は read-only で、missing test/build/browser evidence は Lead に依頼します。
+- `Code Reviewer`：correctness、maintainability、regressions、missing tests を独立して review します。
+- `Security Reviewer`：auth、permissions、data、secrets、dependencies、deployment risk、release security を独立して review します。
 
 ## Subagent Mode
 
-Agent Team は 1 つの実行モデルを使います：
+Agent Team は 1 つの実行モデルを使います：Subagent Mode。
 
 ```text
-Subagent Mode
-  Lead が bounded Role Packet で各 role を dispatch します。
-  Lead は dispatch 前に Role Packet を検証します。
-  その role は specialist subagent として実行されます。
-  各 role は artifact を返します。
-  Lead は gate を通過させる前に artifact を検証します。
-  Gates と loops は private reasoning ではなく artifacts を消費します。
+Lead dispatches each role with a bounded Role Packet.
+Lead validates the Role Packet before dispatch.
+The role runs as a specialist subagent.
+Each role returns an artifact.
+Lead validates the artifact before a gate can pass.
+Gates and loops consume artifacts, not private reasoning.
 ```
 
-Codex subagents は次を使います：
+Codex subagent configuration は次にあります：
 
 ```text
 .codex/config.toml
 .codex/agents/*.toml
-agent-team-protocol/10-subagents.md
+.codex/agents/README.md
 ```
 
-Codex subagent adapter には次の custom agents が含まれています：
+Lead は subagent ではありません。Lead は parent orchestrator です。
 
-- Product Designer
-- Project Explorer
-- Architect
-- Frontend Engineer
-- Backend Engineer
-- DevOps Engineer
-- QA Engineer
-- Code Reviewer
-- Security Reviewer
-
-Lead は subagent ではありません。Lead は parent orchestrator のままです。
-
-Subagents は、独立した探索、architecture checks、QA、code review、security review、context pollution が品質に影響する大きめのタスクに向いています。Implementation subagents はファイルを書けますが、明示的な user approval があり、ownership boundaries が明確な場合に限ります。
-
-Subagents を dispatch できるのは Lead だけです。Subagents は互いに呼び出しません。
-
-Implementation freeze 後、QA Engineer、Code Reviewer、Security Reviewer は同じ frozen implementation artifact に対して並行実行できます。Lead はそれらの report を final release summary に merge しますが、specialist judgment をやり直したり上書きしたりしてはいけません。
+Codex subagent threads が利用できない場合、Lead は `SUBAGENT_UNAVAILABLE` を報告し、subagents を有効化するか、このタスクだけ reduced independence で続行するか、キャンセルするかを確認します。Reduced-independence execution は明示的な waiver であり、通常の Subagent Mode ではありません。
 
 ## Quick Start
 
-Codex にこの team protocol に従わせたいプロジェクトの root に、次をコピーします：
+Codex にこの workflow に従わせたいプロジェクトの root に、次をコピーします：
 
 ```text
 AGENTS.md
@@ -177,38 +134,38 @@ Review whether this branch is ready to release.
 Refactor the dashboard export flow.
 ```
 
-Codex は、あなたが Lead に話しているものとして扱い、その後 protocol gates を通して作業をルーティングします。
+Codex は、あなたが `Lead` に話しているものとして扱い、その後 protocol を通して作業を route します。
 
-## Workflow
+コピー/インストール手順は [INSTALL.md](INSTALL.md) を参照してください。
 
-```text
-Lead
- -> Product Designer
- -> Project Explorer
- -> Architect
- -> DevOps Engineer, early release feasibility
- -> User Approval
- -> Frontend Engineer / Backend Engineer / DevOps Engineer
- -> QA Engineer
- -> Code Reviewer
- -> Security Reviewer
- -> Lead Final
-```
+## Quality Rules
 
-Implementation は user approval までブロックされます。
+この protocol は、失敗コストが高い場所に checks を追加しますが、小さなタスクすべてを重い ceremony にするわけではありません。
 
-Security Reviewer は hard release gate であり、release を veto できます。
+- Lead は各 role に対して、allowed inputs、forbidden inputs、evidence included、evidence missing、expected output をパッケージします。
+- Role Packet と返却された artifact は validity checks を通過しない限り、Lead は dispatch したり gate を passed と扱ったりできません。
+- Context budget は重複 context を減らしますが、gates、reviewer independence、approval、release checks は減らしません。
+- Architect は repository facts、verified external facts、assumptions、recommendations を分けます。
+- Engineers は小さな implementation slices で作業し、checks と rollback notes を残します。
+- QA は implementation claims を信じるのではなく evidence を検証します。
+- Code Reviewer は最もリスクの高い correctness claim に対して短い doubt check を使います。
+- Security Reviewer は重要領域を `Reviewed`、`Not relevant`、`Not checked` として記録します。
+- 同じ blocking failure が 2 回連続で未解決の場合、loop を停止します。
 
-Implementation 中、この protocol は分離された engineering handoffs を期待します：
+## Not A Runtime
 
-```text
-06a-frontend-implementation.md
-06b-backend-implementation.md
-06c-devops-implementation.md
-06-implementation-summary.md
-```
+Agent Team は Codex のための Markdown ルールシステムであり、カスタム agent runtime ではありません。
 
-QA、Code Reviewer、Security Reviewer は、これらの artifacts を独立して読みます。
+含まれていないもの：
+
+- server
+- database
+- queue
+- vector memory
+- background workers
+- Codex 外での automatic multi-agent orchestration
+
+本物の runtime system は、productized agent platform、CI bot、long-running background jobs、persistent memory、logs、evals、自動 task execution が必要な場合に有用です。このプロジェクトは意図的に軽量です：`AGENTS.md`、`agent-team-protocol/`、`.codex/` をプロジェクトにコピーし、通常どおり Codex と作業します。
 
 ## File Map
 
@@ -217,7 +174,7 @@ AGENTS.md
   Loader file。短く保ちます。Codex に読むべき protocol files を伝えます。
 
 agent-team-protocol/
-  gates、artifacts、approval、loops、release policy の主要ルール。
+  gates、artifacts、approval、loops、boundaries、release policy の主要ルール。
 
 agent-team-protocol/roles/
   role ごとに 1 ファイル。role-specific rules は AGENTS.md ではなくここに追加します。
@@ -229,7 +186,7 @@ agent-team-protocol/examples/
   任意の一時 role packets、artifacts、logs、patches。ユーザーが明示的に保存を求めない限り、git では無視されます。
 
 .codex/
-  Codex custom agent definitions。project-scoped subagent files と、agent names を role specs に対応させる `.codex/agents/README.md` を含みます。
+  Codex custom agent definitions。agent names を role specs に対応させる `.codex/agents/README.md` を含みます。
 
 INSTALL.md
   別リポジトリへのコピー/インストール手順。
@@ -237,21 +194,25 @@ INSTALL.md
 
 ## Ask-User Policy
 
+Codex は analyze、inspect、plan proposal はできますが、implementation には明示的な user permission が必要です。
+
 protocol は、次の場合に続行前にユーザーへ確認します：
 
-- Scope または acceptance criteria が不明確な場合。
-- Product tradeoff が必要な場合。
-- 新しい dependency、paid service、external account、vendor lock-in を導入する場合。
-- Database schema、migrations、auth、permissions、privacy behavior が変わる場合。
-- Deployment、CI/CD、environment variables、secrets、cron、workers、cloud resources が変わる場合。
-- 機能削除、module rewrite、broad refactor が必要な場合。
-- Reviewers が release readiness について不一致の場合。
-- Security が `RELEASE_OK_WITH_RISK_ACCEPTANCE` または `RELEASE_BLOCKED` を返した場合。
-- タスクが元の scope または budget を大きく超える場合。
+- scope または acceptance criteria が不明確
+- product tradeoff が必要
+- 新しい dependency、paid service、external account、vendor lock-in を導入する
+- database schema、migrations、auth、permissions、privacy behavior が変わる
+- deployment、CI/CD、environment variables、secrets、cron、workers、cloud resources が変わる
+- 機能削除、module rewrite、broad refactor が必要
+- reviewers が release readiness について不一致
+- Security が `RELEASE_OK_WITH_RISK_ACCEPTANCE` または `RELEASE_BLOCKED` を返す
+- task が元の scope または budget を大きく超える
 
 これらの条件のいずれかに該当する場合、fast path は使えません。
 
 ## Loop Rules
+
+作業が失敗しても、workflow は毎回ゼロから再開しません。Lead は最も近い responsible gate に作業を戻します。
 
 ```text
 QA failed
@@ -275,11 +236,22 @@ Scope changed
  -> regenerate downstream artifacts
  -> user approval
 
-同じ blocking failure が 2 回連続で未解決
+Same blocking failure repeated 2 consecutive times
  -> stop
- -> Lead が失敗内容、試したこと、残りの選択肢、推奨する次の一手を報告
- -> 3 回目の試行にはユーザーの明示的な承認が必要
+ -> Lead reports what failed, what was tried, remaining options, and recommended next step
+ -> third attempt requires explicit user approval
 ```
+
+## Maintainer Notes
+
+このリポジトリを保守するときは、次の区別を明確にしてください：
+
+- `AGENTS.md` は Codex が最初に読む小さな loader です。
+- `agent-team-protocol/` は永続的な protocol rules を保持します。
+- `.codex/` は Subagent Mode 用の Codex custom agent definitions を保持します。
+- `INSTALL.md` は、この protocol を別のリポジトリへコピーする方法を説明します。
+
+完全な protocol を `AGENTS.md` に重複して書かないでください。重複は将来の drift を生みます。
 
 ## Design References
 
