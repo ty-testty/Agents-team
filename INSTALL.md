@@ -17,10 +17,16 @@ agent-team-protocol/
 Task artifacts, when written as files, should go under:
 
 ```text
-agent-team-protocol/artifacts/<task-id>/
+.agent-team/runs/<run-id>/
 ```
 
-That directory is temporary by default and should be ignored unless the user explicitly asks to preserve artifacts.
+That directory is temporary by default and should be ignored unless the user explicitly asks to preserve artifacts. Keep runtime artifacts outside `agent-team-protocol/`; that directory is for durable protocol rules.
+
+Add this to the target repository `.gitignore`:
+
+```text
+.agent-team/
+```
 
 ## Install
 

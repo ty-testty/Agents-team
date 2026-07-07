@@ -224,11 +224,11 @@ agent-team-protocol/roles/
 agent-team-protocol/examples/
   実際のリポジトリで protocol をテストするための trial workflows。
 
-agent-team-protocol/artifacts/
-  任意の一時 task artifacts。ユーザーが明示的に保存を求めない限り、git では無視されます。
+.agent-team/runs/
+  任意の一時 role packets、artifacts、logs、patches。ユーザーが明示的に保存を求めない限り、git では無視されます。
 
 .codex/
-  Codex custom agent definitions。project-scoped subagent files を含みます。
+  Codex custom agent definitions。project-scoped subagent files と、agent names を role specs に対応させる `.codex/agents/README.md` を含みます。
 
 INSTALL.md
   別リポジトリへのコピー/インストール手順。

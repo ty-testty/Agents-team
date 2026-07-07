@@ -25,17 +25,23 @@ Each role outputs a structured artifact. Downstream roles read only the artifact
 Preferred file location when artifacts are written:
 
 ```text
-agent-team-protocol/artifacts/<task-id>/
+.agent-team/runs/<run-id>/
+  role-packets/
+  artifacts/
+  logs/
+  diff.patch
 ```
 
-Artifacts are temporary by default and should not be committed unless the user explicitly asks to preserve them or the task requires an audit trail. This repository ignores `agent-team-protocol/artifacts/` by default.
+Artifacts are temporary by default and should not be committed unless the user explicitly asks to preserve them or the task requires an audit trail. This repository ignores `.agent-team/` by default.
+
+Keep runtime artifacts outside `agent-team-protocol/`. The protocol directory is for durable rules; `.agent-team/runs/` is for temporary execution output.
 
 If the user asks to commit artifacts, say that the directory is ignored by default and either intentionally force-add the specific artifact files or copy the final artifact summary to a non-ignored documentation location.
 
 Archive artifacts only for high-risk, release-relevant, security-sensitive, or user-requested tasks. A typical archive path is:
 
 ```text
-agent-team-protocol/artifacts/archive/<task-id>/
+.agent-team/runs/archive/<run-id>/
 ```
 
 For small tasks, temporary experiments, typo fixes, or low-risk changes, delete or leave ignored artifacts after the task is complete.

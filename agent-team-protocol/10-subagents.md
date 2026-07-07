@@ -43,6 +43,7 @@ Codex subagent configuration lives in:
 ```text
 .codex/config.toml
 .codex/agents/*.toml
+.codex/agents/README.md
 ```
 
 Durable team rules still live in:
@@ -52,6 +53,8 @@ agent-team-protocol/
 ```
 
 If `.codex/agents/` is missing or unsupported, mark the workflow `SUBAGENT_UNAVAILABLE`. Do not continue as if independent subagents are active.
+
+Use `.codex/agents/README.md` as the human-readable mapping between TOML files, Codex agent `name` fields, and role spec files. Codex dispatch is keyed by the TOML `name` field, so filename, `name`, and role spec must stay aligned.
 
 ## Agent Mapping
 

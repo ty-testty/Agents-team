@@ -224,11 +224,11 @@ agent-team-protocol/roles/
 agent-team-protocol/examples/
   在真实仓库中测试该 protocol 的 trial workflows。
 
-agent-team-protocol/artifacts/
-  可选的临时任务 artifacts。默认被 git 忽略，除非用户明确要求保留。
+.agent-team/runs/
+  可选的临时 role packets、artifacts、logs 和 patches。默认被 git 忽略，除非用户明确要求保留。
 
 .codex/
-  Codex custom agent definitions。包含 project-scoped subagent files。
+  Codex custom agent definitions。包含 project-scoped subagent files，以及把 agent names 对应到 role specs 的 `.codex/agents/README.md`。
 
 INSTALL.md
   复制/安装到另一个仓库的说明。

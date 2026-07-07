@@ -4,4 +4,6 @@ __pycache__/
 .env
 .venv/
 venv/
+.agent-team/
+# Legacy artifact path kept ignored for older runs.
 agent-team-protocol/artifacts/
