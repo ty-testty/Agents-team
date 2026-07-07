@@ -281,13 +281,13 @@ PASS | FAIL | NOT_RUN
 
 ## Browser And Interaction Check
 
-## Evidence Missing Or Not Run
+## Not Verified
 
-## Blocking Issues
+## Blockers
 
 ## Non-blocking Issues
 
-## Recommended Rerun
+## Next Action
 ```
 
 ## 08 Code Review
@@ -302,7 +302,9 @@ PASS | PASS_WITH_NOTES | BLOCKED
 
 ## Evidence
 
-## Blocking Issues
+## Not Verified
+
+## Blockers
 
 ## Non-blocking Issues
 
@@ -317,7 +319,7 @@ Decision:
 
 ## Maintainability Notes
 
-## Required Fixes
+## Next Action
 ```
 
 ## 09 Security Review
@@ -336,11 +338,13 @@ Use `Reviewed`, `Not relevant`, or `Not checked` for important areas.
 
 ## Evidence
 
-## Blocking Issues
+## Not Verified
+
+## Blockers
 
 ## Risk Acceptance Items
 
-## Required Fixes
+## Next Action
 
 ## Release Recommendation
 ```

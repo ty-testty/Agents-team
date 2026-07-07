@@ -63,10 +63,12 @@ Code Review Report should include:
 
 - Decision: `PASS`, `PASS_WITH_NOTES`, or `BLOCKED`
 - Findings ordered by severity
-- Blocking Issues
+- Evidence
+- Not Verified
+- Blockers
 - Non-blocking Issues
 - Missing Tests
 - Maintainability Notes
-- Required Fixes
+- Next Action
 
 Use the Code Review template in `agent-team-protocol/06-output-templates.md`.

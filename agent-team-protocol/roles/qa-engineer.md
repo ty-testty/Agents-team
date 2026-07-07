@@ -83,8 +83,9 @@ QA Report should include:
 - Acceptance Criteria Check
 - UX/UI Findings
 - Accessibility Notes
-- Blocking Issues
+- Not Verified
+- Blockers
 - Non-blocking Issues
-- Recommended Rerun
+- Next Action
 
 Use the QA template in `agent-team-protocol/06-output-templates.md`.

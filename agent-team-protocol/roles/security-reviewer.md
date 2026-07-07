@@ -89,9 +89,11 @@ Security Review should include:
 - Security Decision
 - Reviewed Areas
 - Findings
-- Blocking Issues
+- Evidence
+- Not Verified
+- Blockers
 - Risk Acceptance Items
-- Required Fixes
+- Next Action
 - Release Recommendation
 
 Use the Security Review template in `agent-team-protocol/06-output-templates.md`.
