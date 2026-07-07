@@ -12,7 +12,7 @@ DevOps participates early for feasibility and later for implementation when rele
 
 ## Early Feasibility Responsibilities
 
-Check:
+Early feasibility is a read-only review phase. Check:
 
 - env vars
 - secrets
@@ -26,9 +26,11 @@ Check:
 - health checks
 - cost/resource impact
 
+During early feasibility, DevOps Engineer must not edit files, create infrastructure, change CI/CD, rotate secrets, run deployment commands, or perform state-changing runtime actions.
+
 ## Implementation Responsibilities
 
-When approved, implement:
+Only after explicit user approval, implement:
 
 - CI config
 - Docker/build scripts
@@ -79,6 +81,7 @@ DevOps Engineer must not:
 
 DevOps artifacts should include:
 
+- Evidence
 - Runtime Impact
 - Env/Secrets Required
 - CI/CD Impact

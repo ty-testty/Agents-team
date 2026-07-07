@@ -76,6 +76,8 @@ Artifact: `03-architecture-plan.md`
 
 DevOps Engineer performs an early runtime/release review before implementation.
 
+This gate is read-only. DevOps implementation actions require explicit user approval and belong to the later Implementation Gate.
+
 It checks:
 
 - env vars and secrets
@@ -119,7 +121,7 @@ Lead must freeze the implementation artifact before release review starts. If im
 
 ## 7. QA Gate
 
-QA Engineer verifies function and experience using available commands and evidence. After implementation freeze, QA may run in parallel with Code Review and Security Review.
+QA Engineer verifies function and experience using evidence. QA may inspect provided command output, screenshots, logs, browser evidence, and test results. If missing verification requires state-changing commands, launching servers, downloads, or other execution actions, QA asks Lead to obtain evidence. After implementation freeze, QA may run in parallel with Code Review and Security Review.
 
 Artifact: `07-qa-report.md`
 

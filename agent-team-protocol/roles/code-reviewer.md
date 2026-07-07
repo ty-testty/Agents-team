@@ -30,9 +30,11 @@ Allowed inputs:
 - Project Context Report
 - Architecture Plan
 - implementation artifacts or diff
-- QA Report
+- QA Report when already available
 
 Do not rely on engineer private reasoning.
+
+During initial fan-out review after implementation freeze, Code Reviewer must not wait for QA Report. If QA Report is already available from a rerun or sequential review, Code Reviewer may use it as evidence but must still inspect the diff or implementation artifacts independently.
 
 Forbidden inputs:
 

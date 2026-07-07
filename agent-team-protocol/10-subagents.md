@@ -72,6 +72,10 @@ Use `.codex/agents/README.md` as the human-readable mapping between TOML files, 
 
 Lead is not a subagent. Lead is the parent agent coordinating the workflow.
 
+DevOps Engineer has workspace-write capability for approved implementation work, but the early Release Feasibility Gate is a read-only review phase. Lead must encode that phase boundary in the Role Packet.
+
+QA Engineer is read-only. QA verifies provided evidence and requests missing evidence through Lead when verification requires commands, servers, downloads, or other execution actions.
+
 ## Dispatch Requirements
 
 Before dispatching a subagent, Lead must prepare a bounded Role Packet with:

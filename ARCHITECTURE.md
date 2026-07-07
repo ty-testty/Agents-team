@@ -32,12 +32,14 @@ flowchart LR
         FE["&quot;Frontend Engineer&quot;"]
         BE["&quot;Backend Engineer&quot;"]
         DEVI["&quot;DevOps Engineer&quot;"]
+        FREEZE["Implementation Freeze"]
     end
 
     subgraph Review["Review + Release"]
         QA["&quot;QA Engineer&quot;<br/>QA Gate"]
         CR["&quot;Code Reviewer&quot;<br/>Code Review Gate"]
         SR["&quot;Security Reviewer&quot;<br/>Security Gate"]
+        MERGE["&quot;Lead&quot;<br/>Review Merge"]
         FINAL["&quot;Lead&quot;<br/>Final Summary"]
     end
 
@@ -56,13 +58,17 @@ flowchart LR
     APPR --> BE
     APPR --> DEVI
 
-    FE --> QA
-    BE --> QA
-    DEVI --> QA
+    FE --> FREEZE
+    BE --> FREEZE
+    DEVI --> FREEZE
 
-    QA --> CR
-    CR --> SR
-    SR --> FINAL
+    FREEZE --> QA
+    FREEZE --> CR
+    FREEZE --> SR
+    QA --> MERGE
+    CR --> MERGE
+    SR --> MERGE
+    MERGE --> FINAL
     FINAL --> U
 
     APPR -. scope change .-> PD

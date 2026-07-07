@@ -54,10 +54,12 @@ Allowed inputs:
 - Architecture Plan
 - DevOps Feasibility artifact
 - implementation artifacts or diff
-- QA Report
-- Code Review Report
+- QA Report when already available
+- Code Review Report when already available
 - relevant config, dependency, auth, permission, and deployment evidence
 - protocol rules and Security checklist
+
+During initial fan-out review after implementation freeze, Security Reviewer must not wait for QA Report or Code Review Report. If those reports are already available from a rerun or sequential review, Security Reviewer may use them as evidence but must still make an independent security decision.
 
 Forbidden inputs:
 

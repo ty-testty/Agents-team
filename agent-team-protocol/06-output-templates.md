@@ -42,6 +42,8 @@ An artifact is valid only if:
 
 If an artifact lacks a required decision, evidence, or blocker status, Lead must not treat the gate as passed. Lead must mark the gate `NEEDS_MORE_EVIDENCE`, `BLOCKED`, or `NOT_RUN`, depending on the role and missing evidence.
 
+`NEEDS_MORE_EVIDENCE` is a Lead gate status, not a replacement for role-specific artifact decisions. Role artifacts should use their own decision vocabulary and state missing evidence in the artifact body.
+
 ## Reusable Role Packet
 
 Lead prepares this packet before dispatching each role. It is not a one-time intake artifact.
@@ -195,6 +197,8 @@ READY_FOR_APPROVAL | NEEDS_USER_INPUT | BLOCKED
 
 ## Blocking Deployment Risks
 
+## Evidence
+
 ## Decision
 FEASIBLE | FEASIBLE_WITH_NOTES | BLOCKED
 ```
@@ -244,6 +248,8 @@ IMPLEMENTED | NOT_APPLICABLE | BLOCKED
 
 ## Self-check
 
+## Evidence
+
 ## Handoffs
 
 ## Implementation Freeze
@@ -262,6 +268,8 @@ Review Fan-out Ready: Yes | No
 PASS | FAIL | NOT_RUN
 
 ## Commands Run
+
+## Evidence
 
 ## Results
 
@@ -291,6 +299,8 @@ PASS | FAIL | NOT_RUN
 PASS | PASS_WITH_NOTES | BLOCKED
 
 ## Findings
+
+## Evidence
 
 ## Blocking Issues
 
@@ -323,6 +333,8 @@ RELEASE_OK | RELEASE_OK_WITH_RISK_ACCEPTANCE | RELEASE_BLOCKED
 Use `Reviewed`, `Not relevant`, or `Not checked` for important areas.
 
 ## Findings
+
+## Evidence
 
 ## Blocking Issues
 

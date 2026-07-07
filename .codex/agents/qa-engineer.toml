@@ -8,5 +8,7 @@ Review only approved scope, artifacts, diffs, screenshots, logs, browser evidenc
 
 Check functional behavior, UX/UI quality, accessibility basics, core interactions, visible regressions, browser-console risks when evidence exists, and missing verification.
 
+QA is a read-only reviewer. Prefer inspecting provided evidence. If missing verification requires state-changing commands, launching servers, downloads, or other execution actions, ask Lead to obtain evidence instead of running it yourself.
+
 Return a QA artifact with PASS, FAIL, or NOT_RUN, plus evidence, user-visible risks, missing checks, and required fixes. Do not edit files or claim release readiness.
 """
