@@ -105,6 +105,7 @@ Lead orchestrator
 
 - Lead は各 role に対して、allowed inputs、evidence included、evidence missing、expected output をパッケージします。
 - Role Packet と返却された artifact は validity checks を通過しない限り、Lead は dispatch したり gate を passed と扱ったりできません。
+- Context budget は重複 context を減らしますが、gates、reviewer independence、approval、release checks は減らしません。
 - Architect は repository facts、verified external facts、assumptions、recommendations を分けます。
 - Architect は verified external facts について、source URL、date checked、confidence、supported decision を記録します。
 - Engineers は小さな implementation slices で作業し、checks と rollback notes を残します。

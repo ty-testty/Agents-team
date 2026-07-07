@@ -37,6 +37,8 @@ For non-trivial role work:
 
 Use `agent-team-protocol/10-subagents.md` for subagent dispatch rules.
 
+Use `agent-team-protocol/11-context-budget.md` to keep packets small without weakening role separation, gates, or review requirements.
+
 If Codex subagent threads are unavailable:
 
 - Lead must mark the workflow `SUBAGENT_UNAVAILABLE`

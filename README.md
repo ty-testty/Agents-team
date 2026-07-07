@@ -105,6 +105,7 @@ The protocol keeps extra rigor lightweight. It does not require a full ceremony 
 
 - Lead packages each role with allowed inputs, evidence included, evidence missing, and expected output.
 - Role Packets and returned artifacts must pass validity checks before Lead can dispatch or mark a gate passed.
+- Context budget reduces duplicated context without reducing gates, reviewer independence, approval, or release checks.
 - Architect separates repository facts, verified external facts, assumptions, and recommendations.
 - Architect records source URL, date checked, confidence, and supported decision for verified external facts.
 - Engineers work in small implementation slices with checks and rollback notes.

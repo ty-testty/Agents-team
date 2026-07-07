@@ -25,16 +25,17 @@ Before doing non-trivial work, read these files in order:
 9. `agent-team-protocol/08-engineering-boundaries.md`
 10. `agent-team-protocol/09-context-boundaries.md`
 11. `agent-team-protocol/10-subagents.md`
-12. `agent-team-protocol/roles/lead.md`
-13. `agent-team-protocol/roles/product-designer.md`
-14. `agent-team-protocol/roles/project-explorer.md`
-15. `agent-team-protocol/roles/architect.md`
-16. `agent-team-protocol/roles/frontend-engineer.md`
-17. `agent-team-protocol/roles/backend-engineer.md`
-18. `agent-team-protocol/roles/devops-engineer.md`
-19. `agent-team-protocol/roles/qa-engineer.md`
-20. `agent-team-protocol/roles/code-reviewer.md`
-21. `agent-team-protocol/roles/security-reviewer.md`
+12. `agent-team-protocol/11-context-budget.md`
+13. `agent-team-protocol/roles/lead.md`
+14. `agent-team-protocol/roles/product-designer.md`
+15. `agent-team-protocol/roles/project-explorer.md`
+16. `agent-team-protocol/roles/architect.md`
+17. `agent-team-protocol/roles/frontend-engineer.md`
+18. `agent-team-protocol/roles/backend-engineer.md`
+19. `agent-team-protocol/roles/devops-engineer.md`
+20. `agent-team-protocol/roles/qa-engineer.md`
+21. `agent-team-protocol/roles/code-reviewer.md`
+22. `agent-team-protocol/roles/security-reviewer.md`
 
 For tiny, low-risk requests, read at minimum:
 
@@ -44,7 +45,8 @@ For tiny, low-risk requests, read at minimum:
 4. `agent-team-protocol/08-engineering-boundaries.md` when code will change
 5. `agent-team-protocol/09-context-boundaries.md`
 6. `agent-team-protocol/10-subagents.md`
-7. The role files relevant to the task
+7. `agent-team-protocol/11-context-budget.md`
+8. The role files relevant to the task
 
 ## Operating Rule
 

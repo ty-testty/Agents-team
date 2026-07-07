@@ -91,6 +91,8 @@ The Role Packet must satisfy the Role Packet Validity Rule in `agent-team-protoc
 
 The subagent should return only the requested artifact or concise findings. Lead must not paste raw intermediate logs, private reasoning, or broad transcript history back into the main context unless they are necessary evidence.
 
+Use `agent-team-protocol/11-context-budget.md` when deciding how much transcript, artifact, diff, log, screenshot, or command evidence to include in a Role Packet.
+
 ## Dispatch Sequence
 
 For each required gate:
@@ -196,3 +198,5 @@ Use parallel subagents when the benefit is clear:
 - large logs, long documents, or noisy test output
 
 For tiny, text-only, or low-risk work, Lead may use the smallest relevant subagent set, but any required specialist judgment still belongs to the appropriate subagent.
+
+Context budget can reduce duplicated context, but it must not reduce required gates, user approval, reviewer independence, or release checks.

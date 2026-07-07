@@ -105,6 +105,7 @@ Lead orchestrator
 
 - Lead 为每个 role 打包 allowed inputs、evidence included、evidence missing 和 expected output。
 - Role Packet 和返回的 artifact 必须通过 validity checks，Lead 才能 dispatch 或把 gate 判为 passed。
+- Context budget 减少重复上下文，但不减少 gates、reviewer independence、approval 或 release checks。
 - Architect 区分 repository facts、verified external facts、assumptions 和 recommendations。
 - Architect 为 verified external facts 记录 source URL、date checked、confidence 和 supported decision。
 - Engineers 以小的 implementation slices 工作，并记录 checks 和 rollback notes。
