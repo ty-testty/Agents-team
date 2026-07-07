@@ -13,6 +13,35 @@ These templates make the protocol executable. Roles may keep outputs concise, bu
 - Include evidence or say `Not run` / `Not verified`.
 - Keep the artifact scoped to the role.
 
+## Role Packet Validity Rule
+
+A Role Packet is valid only if:
+
+- `Role` maps to a known Codex custom agent in `.codex/agents/`.
+- `Objective` is specific and scoped to the current task.
+- `Approved Scope` is explicit.
+- `Allowed Inputs` are listed.
+- `Forbidden Inputs` are listed.
+- `Evidence Included` is enough for the requested decision.
+- `Evidence Missing` is explicitly marked, even if empty.
+- `Required Output Artifact` matches the role.
+- `Stop Conditions` are role-specific.
+
+If a required field is missing or too vague, Lead must not dispatch the subagent. Lead must return `PACKET_INCOMPLETE`, repair the packet, and dispatch only after the packet is valid.
+
+## Artifact Validity Rule
+
+An artifact is valid only if:
+
+- it includes the required decision field
+- it separates evidence from assumptions
+- it marks missing or unverified evidence
+- it lists blockers or explicitly says none
+- it includes next action or handoff
+- it stays within the role scope
+
+If an artifact lacks a required decision, evidence, or blocker status, Lead must not treat the gate as passed. Lead must mark the gate `NEEDS_MORE_EVIDENCE`, `BLOCKED`, or `NOT_RUN`, depending on the role and missing evidence.
+
 ## Reusable Role Packet
 
 Lead prepares this packet before dispatching each role. It is not a one-time intake artifact.
@@ -52,7 +81,7 @@ Yes | No
 ## Initial Questions
 
 ## Decision
-PROCEED | NEEDS_USER_INPUT | SUBAGENT_UNAVAILABLE | BLOCKED
+PROCEED | NEEDS_USER_INPUT | SUBAGENT_UNAVAILABLE | PACKET_INCOMPLETE | BLOCKED
 ```
 
 ## 01 Product Brief

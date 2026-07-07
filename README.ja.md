@@ -104,6 +104,7 @@ Lead orchestrator
 この protocol は、追加の厳密さを軽量に保ちます。小さなタスクすべてに重い ceremony を要求するわけではありませんが、失敗コストが高い場所ではより強い checks を追加します：
 
 - Lead は各 role に対して、allowed inputs、evidence included、evidence missing、expected output をパッケージします。
+- Role Packet と返却された artifact は validity checks を通過しない限り、Lead は dispatch したり gate を passed と扱ったりできません。
 - Architect は repository facts、verified external facts、assumptions、recommendations を分けます。
 - Architect は verified external facts について、source URL、date checked、confidence、supported decision を記録します。
 - Engineers は小さな implementation slices で作業し、checks と rollback notes を残します。
@@ -122,8 +123,10 @@ Agent Team は 1 つの実行モデルを使います：
 ```text
 Subagent Mode
   Lead が bounded Role Packet で各 role を dispatch します。
+  Lead は dispatch 前に Role Packet を検証します。
   その role は specialist subagent として実行されます。
   各 role は artifact を返します。
+  Lead は gate を通過させる前に artifact を検証します。
   Gates と loops は private reasoning ではなく artifacts を消費します。
 ```
 

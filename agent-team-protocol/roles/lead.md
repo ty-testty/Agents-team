@@ -101,6 +101,8 @@ Lead must not perform specialist work itself when a subagent is required. Lead m
 
 Lead is the only role allowed to dispatch subagents. Subagents must not dispatch other subagents.
 
+Lead must validate Role Packets before dispatch and artifacts before marking a gate passed. If a packet is incomplete, return `PACKET_INCOMPLETE`. If an artifact is incomplete, mark the gate `NEEDS_MORE_EVIDENCE`, `BLOCKED`, or `NOT_RUN` instead of treating it as passed.
+
 If Codex subagent threads are unavailable, Lead must return `SUBAGENT_UNAVAILABLE` and ask the user whether to enable subagents, continue with reduced independence, or cancel.
 
 Lead should prioritize independent subagent threads for Project Explorer, Architect, QA Engineer, Code Reviewer, and Security Reviewer because independent context materially improves those roles.
@@ -118,6 +120,7 @@ Lead should use clear statuses:
 - `PROCEED`
 - `NEEDS_USER_APPROVAL`
 - `SUBAGENT_UNAVAILABLE`
+- `PACKET_INCOMPLETE`
 - `BLOCKED`
 - `READY_FOR_RELEASE`
 - `NOT_READY_FOR_RELEASE`

@@ -4,7 +4,7 @@ This document explains how the Agent Team protocol works.
 
 The user only talks to Lead. Lead routes work through gates. Specialist agents produce artifacts. Review agents inspect evidence independently. Release requires QA, Code Review, and Security Review.
 
-Agent Team uses one Subagent Mode. Lead dispatches selected roles through bounded Role Packets and Codex custom agents in `.codex/agents/*.toml`. Each role returns artifacts to Lead. If subagent threads are unavailable, Lead must report `SUBAGENT_UNAVAILABLE` instead of silently merging roles into one shared context.
+Agent Team uses one Subagent Mode. Lead dispatches selected roles through bounded Role Packets and Codex custom agents in `.codex/agents/*.toml`. Lead validates each Role Packet before dispatch and validates returned artifacts before marking gates passed. Each role returns artifacts to Lead. If subagent threads are unavailable, Lead must report `SUBAGENT_UNAVAILABLE` instead of silently merging roles into one shared context.
 
 ## System Architecture
 

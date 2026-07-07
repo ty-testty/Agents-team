@@ -104,6 +104,7 @@ Lead orchestrator
 这个协议保持额外严格性是轻量的。它不会要求每个小任务都走完整仪式，但会在错误代价较高的地方加强检查：
 
 - Lead 为每个 role 打包 allowed inputs、evidence included、evidence missing 和 expected output。
+- Role Packet 和返回的 artifact 必须通过 validity checks，Lead 才能 dispatch 或把 gate 判为 passed。
 - Architect 区分 repository facts、verified external facts、assumptions 和 recommendations。
 - Architect 为 verified external facts 记录 source URL、date checked、confidence 和 supported decision。
 - Engineers 以小的 implementation slices 工作，并记录 checks 和 rollback notes。
@@ -122,8 +123,10 @@ Agent Team 使用一种执行模型：
 ```text
 Subagent Mode
   Lead 用 bounded Role Packet 分发每个 role。
+  Lead 在 dispatch 前验证 Role Packet。
   该 role 作为 specialist subagent 运行。
   每个 role 返回 artifact。
+  Lead 在 gate 通过前验证 artifact。
   Gates 和 loops 消费 artifacts，而不是 private reasoning。
 ```
 

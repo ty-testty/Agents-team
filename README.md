@@ -104,6 +104,7 @@ Lead orchestrator
 The protocol keeps extra rigor lightweight. It does not require a full ceremony for every small task, but it does add stronger checks where mistakes are costly:
 
 - Lead packages each role with allowed inputs, evidence included, evidence missing, and expected output.
+- Role Packets and returned artifacts must pass validity checks before Lead can dispatch or mark a gate passed.
 - Architect separates repository facts, verified external facts, assumptions, and recommendations.
 - Architect records source URL, date checked, confidence, and supported decision for verified external facts.
 - Engineers work in small implementation slices with checks and rollback notes.
@@ -122,8 +123,10 @@ Agent Team uses one execution model:
 ```text
 Subagent Mode
   Lead dispatches each role with a bounded Role Packet.
+  Lead validates the Role Packet before dispatch.
   The role runs as a specialist subagent.
   Each role returns an artifact.
+  Lead validates the artifact before a gate can pass.
   Gates and loops consume artifacts, not private reasoning.
 ```
 

@@ -84,6 +84,8 @@ Before dispatching a subagent, Lead must prepare a bounded Role Packet with:
 - artifact location or transcript location
 - stop conditions
 
+The Role Packet must satisfy the Role Packet Validity Rule in `agent-team-protocol/06-output-templates.md`. If the packet is incomplete, Lead must return `PACKET_INCOMPLETE` and repair the packet before dispatch.
+
 The subagent should return only the requested artifact or concise findings. Lead must not paste raw intermediate logs, private reasoning, or broad transcript history back into the main context unless they are necessary evidence.
 
 ## Dispatch Sequence
@@ -92,10 +94,11 @@ For each required gate:
 
 1. Lead selects the correct subagent from the mapping.
 2. Lead prepares a bounded Role Packet.
-3. Lead dispatches the subagent in a separate Codex subagent thread.
-4. The subagent returns only its artifact or concise findings.
-5. Lead validates that the artifact has the required decision, evidence, risks, and stop conditions.
-6. Lead routes the artifact to the next gate or loop.
+3. Lead validates the Role Packet.
+4. Lead dispatches the subagent in a separate Codex subagent thread.
+5. The subagent returns only its artifact or concise findings.
+6. Lead validates the returned artifact against the Artifact Validity Rule.
+7. Lead routes the artifact to the next gate or loop.
 
 Lead must not replace a required specialist subagent with Lead's own judgment.
 
